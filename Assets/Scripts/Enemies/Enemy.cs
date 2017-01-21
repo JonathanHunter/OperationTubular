@@ -99,10 +99,5 @@ namespace Assets.Scripts.Enemies
                 damage = 1000000;
             }
         }
-
-        protected float Lerp(float min, float max, float f)
-        {
-            return min + f * (max - min);
-        }
     }
 }

@@ -10,6 +10,8 @@ namespace Assets.Scripts.Enemies
         public float delay;
         public float min = .1f;
         public float max = 10f;
+        public float arrivalSpeed;
+        public float movementSpeed;
 
         private float dist;
         private float shootTimer;
@@ -42,9 +44,9 @@ namespace Assets.Scripts.Enemies
             }
             if (dist < 1)
             {
-                dist += Time.deltaTime;
+                dist += Time.deltaTime * arrivalSpeed;
                 gameObject.transform.localScale =
-                    new Vector3(Lerp(min, max, dist), Lerp(min, max, dist), 1);
+                    new Vector3(Util.Lerp1D.Lerp(min, max, dist), Util.Lerp1D.Lerp(min, max, dist), 1);
             }
             else
             {
@@ -53,9 +55,9 @@ namespace Assets.Scripts.Enemies
                 else if (transform.position.x > GameManager.xBounds.y)
                     left = true;
                 if (left)
-                    transform.Translate(Vector2.left * Time.deltaTime);
+                    transform.Translate(Vector2.left * Time.deltaTime * movementSpeed);
                 else
-                    transform.Translate(Vector2.right * Time.deltaTime);
+                    transform.Translate(Vector2.right * Time.deltaTime * movementSpeed);
 
                 if((shootTimer += Time.deltaTime) > shootTime)
                 {

@@ -11,6 +11,7 @@ namespace Assets.Scripts.Bullets
         public float min = .1f;
         public float max = 10f;
         public float spinDir;
+        public float speed;
 
         private Vector2 begin, end;
         private float dist;
@@ -38,25 +39,20 @@ namespace Assets.Scripts.Bullets
             }
             if (dist < 1)
             {
-                dist += Time.deltaTime;
+                dist += Time.deltaTime * speed;
                 gameObject.transform.position = Vector2.Lerp(begin, end, dist);
                 transform.localRotation = Quaternion.Euler(new Vector3(0, 0, dist * 360f * spinDir));
                 if (enemyBullet)
                     gameObject.transform.localScale =
-                        new Vector3(Lerp(min, max, dist), Lerp(min, max, dist), 1);
+                        new Vector3(Util.Lerp1D.Lerp(min, max, dist), Util.Lerp1D.Lerp(min, max, dist), 1);
                 else
                     gameObject.transform.localScale =
-                        new Vector3(Lerp(max, min, dist), Lerp(max, min, dist), 1);
+                        new Vector3(Util.Lerp1D.Lerp(max, min, dist), Util.Lerp1D.Lerp(max, min, dist), 1);
             }
             else
             {
                 manager.Recover(index);
             }
-        }
-
-        private float Lerp(float min, float max, float f)
-        {
-            return min + f * (max - min);
         }
     }
 }
