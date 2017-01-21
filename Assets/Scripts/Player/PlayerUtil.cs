@@ -3,6 +3,8 @@ using System.Collections;
 
 namespace Assets.Scripts.Player {
 	class PlayerUtil : MonoBehaviour {
+		public static float surfacePos = -0.5f; //TODO: something smarter than this
+
 		/*
 			returns unity values of rotation
 			@params currentRotation - pass in the z rotation

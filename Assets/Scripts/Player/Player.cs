@@ -6,10 +6,14 @@ namespace Assets.Scripts.Player {
 
 	public class Player : MonoBehaviour {
 
-		public float acceleration = 0.5f;
-		public float decceleration = 8f;
-		public float maxSpeed = 5f;
 		private Vector2 movement = new Vector2(0, 0);
+
+		public float acceleration = 0.8f;
+		public float decceleration = 12f;
+		public float maxSpeed = 6f;
+
+		public float jumpSpeed = 5f;
+		private float jumpStartTime = 0f;
 
 		public float rotationSpeed = 180;
 		public float maxRotation = 15;
@@ -18,7 +22,7 @@ namespace Assets.Scripts.Player {
 		public bool shouldBob = true;//should the player bob in the water
 
 		private bool isJumping = false; //is player jumping
-		private bool isOnSurface = false; //is player on surface of water
+		// private bool isOnSurface = true; //is player on surface of water
 		private bool isPlayerMoving = false; //is player asking the character to move
 
 		// Use this for initialization
@@ -28,6 +32,7 @@ namespace Assets.Scripts.Player {
 		
 		// Update is called once per frame
 		void Update () {
+			//Horizontal Movement
 			if(this.getLeftPressed()){
 				this.isPlayerMoving = true;
 				this.handlePlayerMove(-1f);
@@ -47,18 +52,19 @@ namespace Assets.Scripts.Player {
 						this.movement.x += deceVal;
 					}
 				} else {
-					this.movement = new Vector2(0, 0);
+					this.movement.x = 0;
 				}
 				this.isPlayerMoving = false;
 			}
-
-			//we're constantly moving the character
-			this.handleMovement();
-
-			if(this.getJumpPressed() && !this.getAirborne()){
-				this.handleJump();
+			//Vertical Movement
+			if(this.getJumpPressed() && !this.getAirborne() && this.getIsOnSurface()){
+				this.actionJump();
+			}
+			if(this.isJumping) {
+				this.handleJumping();
 			}
 
+			//Passive Movement
 			if(this.getShouldBob()) {
 				// TODO properly loop animation
 				float percentInRotation = PlayerUtil.getPercentInRotation(transform.localEulerAngles.z, this.maxRotation);
@@ -68,7 +74,14 @@ namespace Assets.Scripts.Player {
 				float leanValue = leanCurve - leanOffset;
 
 				this.lean(leanValue);
+			} else {
+				//rotate back towards center
+				float percentInRotation = PlayerUtil.getPercentInRotation(transform.localEulerAngles.z, this.maxRotation);
+				this.lean(-percentInRotation);
 			}
+
+			//constantly move the character
+			this.handleMovement();
 		}
 
 		// Handlers
@@ -90,14 +103,29 @@ namespace Assets.Scripts.Player {
 				this.movement.x = -this.maxSpeed;
 			}
 
-			if(this.movement.x != 0){
-				transform.Translate(this.movement * Time.deltaTime, Space.World);
+			if(transform.position.y > PlayerUtil.surfacePos) {
+				this.movement.y -= 0.5f;
+			} else if(transform.position.y <= PlayerUtil.surfacePos && (Time.time - this.jumpStartTime) > 0.5f) {
+				this.movement.y = 0;
+				transform.position = new Vector2(transform.position.x, PlayerUtil.surfacePos);
+			}
+
+			transform.Translate(this.movement * Time.deltaTime, Space.World);
+		}
+
+		private void handleJumping() {
+			float timeSinceJumping = (Time.time - this.jumpStartTime);
+
+			if(this.getIsOnSurface() && timeSinceJumping > 0.5f){
+				this.isJumping = false;
 			}
 		}
 
-		private void handleJump() {
+		private void actionJump() {
 			if(!this.getAirborne()) {
-
+				this.isJumping = true;
+				this.jumpStartTime = Time.time;
+				this.movement.y = this.jumpSpeed;
 			}
 		}
 
@@ -126,7 +154,12 @@ namespace Assets.Scripts.Player {
 		}
 
 		public bool getIsOnSurface() {
-			return this.isOnSurface;
+			if(transform.position.y <= PlayerUtil.surfacePos){
+				return true;
+			} else {
+				return false;
+			}
+			// return this.isOnSurface;
 		}
 
 		public bool getShouldBob() {
