@@ -8,8 +8,11 @@ namespace Assets.Scripts.Manager
 
         public static bool IsPaused { get { return paused; } }
 
-        public static Vector2 xBounds = new Vector2(-9, 9);
-        public static Vector2 yBounds = new Vector2(5, -5);
+        public static float horizontalMax = 12;
+        public static float verticalMax = 5;
+
+        public static Vector2 xBounds = new Vector2(-horizontalMax, horizontalMax);
+        public static Vector2 yBounds = new Vector2(verticalMax, -verticalMax);
 
         public static GameManager instance;
 
