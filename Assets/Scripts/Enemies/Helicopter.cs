@@ -8,8 +8,9 @@ namespace Assets.Scripts.Enemies
         public float shootTime;
         public float numShots;
         public float delay;
+        public float min = .1f;
+        public float max = 10f;
 
-        private float min = .1f, max = 10f;
         private float dist;
         private float shootTimer;
         private float shots;
@@ -61,6 +62,11 @@ namespace Assets.Scripts.Enemies
                     shots++;
                     if(shots < numShots)
                         shootTimer = shootTime - delay;
+                    else
+                    {
+                        shootTimer = 0;
+                        shots = 0;
+                    }
                     int i = (int)Util.SinusoidalRandom.Range(0, GameManager.instance.players.Length);
                     EnemyBulletManager.instance.Spawn(this.transform.position, GameManager.instance.players[i].transform.position);
                 }

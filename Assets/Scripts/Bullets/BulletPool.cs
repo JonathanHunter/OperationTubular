@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Assets.Scripts.Bullets
 {
@@ -8,11 +7,14 @@ namespace Assets.Scripts.Bullets
     {
         public Bullet prefab;
         public int length;
+
         private Bullet[] bullets;
         private Vector2 standbyPos = new Vector2(-1000, 0);
+        private bool inited;
 
         void Init()
         {
+            inited = true;
             bullets = new Bullet[length];
             for (int i = 0; i < length; i++)
             {
@@ -36,7 +38,10 @@ namespace Assets.Scripts.Bullets
             return -1;
         }
 
-        public void Spawn(Vector3 startPos, Vector2 target) {
+        public void Spawn(Vector3 startPos, Vector2 target)
+        {
+            if (!inited)
+                Init();
             int index = FindAvailable();
             if (index > -1)
             {
@@ -44,7 +49,7 @@ namespace Assets.Scripts.Bullets
                 bullets[index].transform.position = startPos;
                 bullets[index].Init(target);
             }
-            
+
         }
 
         public void Recover(int index)
@@ -53,16 +58,10 @@ namespace Assets.Scripts.Bullets
             bullets[index].gameObject.SetActive(false);
         }
 
-        // Use this for initialization
-        void Start()
+        private void Start()
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            if (!inited)
+                Init();
         }
     }
 }

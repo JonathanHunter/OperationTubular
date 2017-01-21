@@ -13,7 +13,7 @@ namespace Assets.Scripts.Manager
 
         public static GameManager instance;
 
-        public Player.Player[] players;
+        public GameObject[] players;
 
         private void Start()
         {
