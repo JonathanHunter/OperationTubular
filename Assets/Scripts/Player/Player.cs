@@ -13,7 +13,7 @@ namespace Assets.Scripts.Player {
 		public float decceleration = 12f;
 		public float maxSpeed = 6f;
 
-		public float jumpSpeed = 5f;
+		public float jumpSpeed = 15f;
 		private float jumpStartTime = 0f;
 
 		public float rotationSpeed = 180;
@@ -97,7 +97,7 @@ namespace Assets.Scripts.Player {
 				this.movement.x = this.maxSpeed * magnitude;
 			}
 		}
-		// Actions
+		// Handlers
 		private void handleMovement() {
 			if(this.movement.x > this.maxSpeed) {
 				this.movement.x = this.maxSpeed;
@@ -108,8 +108,9 @@ namespace Assets.Scripts.Player {
 			if(transform.position.y > PlayerUtil.surfacePos) {
 				this.movement.y -= 0.5f;
 			} else if(transform.position.y <= PlayerUtil.surfacePos && (Time.time - this.jumpStartTime) > 0.5f) {
-				this.movement.y = 0;
-				transform.position = new Vector2(transform.position.x, PlayerUtil.surfacePos);
+				this.movement.y = this.movement.y * 0.5f;
+				Vector2 targetPos = new Vector2(transform.position.x, PlayerUtil.surfacePos);
+				transform.position = Vector2.Lerp(transform.position, targetPos, 0.1f);
 			}
 
 			transform.Translate(this.movement * Time.deltaTime, Space.World);
@@ -122,6 +123,12 @@ namespace Assets.Scripts.Player {
 				this.isJumping = false;
 			}
 		}
+
+		private void handleHitSurface() {
+
+		}
+
+		//Actions
 
 		private void actionJump() {
 			if(!this.getAirborne()) {
@@ -169,8 +176,7 @@ namespace Assets.Scripts.Player {
 		}
 
 		public bool getJumpPressed() {
-			//for some reason down is negative
-			if(InputManager.instance.lStickY1 < 0) {
+			if(InputManager.instance.aPressed1) {
 				return true;
 			}
 			return false;
