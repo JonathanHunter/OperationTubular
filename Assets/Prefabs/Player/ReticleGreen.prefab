@@ -21,7 +21,7 @@ GameObject:
   - 4: {fileID: 4000010900175264}
   - 212: {fileID: 212000012529135948}
   m_Layer: 0
-  m_Name: ReticleBlue
+  m_Name: ReticleGreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2c52b009a134e744cbbb4f29f6700fee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b8875f383b7513a469f753e81cd49d12, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
