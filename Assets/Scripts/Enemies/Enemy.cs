@@ -50,7 +50,7 @@ namespace Assets.Scripts.Enemies
                     health -= damage;
                     hit = false;
                     if (health < 0)
-                        dead = false;
+                        dead = true;
                 }
                 if (dead)
                     Die();
@@ -92,7 +92,6 @@ namespace Assets.Scripts.Enemies
             {
                 hit = true;
                 damage = collision.gameObject.GetComponent<Bullets.Bullet>().damage;
-                Debug.Log(gameObject.name + " collided with a bullet for " + damage + " damage");
             }
             if (collision.gameObject.tag == "Shockwave")
             {

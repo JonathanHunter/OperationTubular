@@ -52,6 +52,7 @@ namespace Assets.Scripts.Player
             if (TempoManager.instance == null)
                 FindObjectOfType<TempoManager>().Init();
             TempoManager.instance.objects.Add(this);
+            health = maxHealth;
         }
 
         // Update is called once per frame
@@ -60,6 +61,7 @@ namespace Assets.Scripts.Player
             if (hit)
             {
                 health -= damage;
+                damage = 0;
                 hit = false;
                 if (health < 0)
                     Die();

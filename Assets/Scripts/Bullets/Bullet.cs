@@ -54,5 +54,10 @@ namespace Assets.Scripts.Bullets
                 manager.Recover(index);
             }
         }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            manager.Recover(index);
+        }
     }
 }

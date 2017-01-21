@@ -21,7 +21,6 @@ namespace Assets.Scripts.Enemies
 
         protected override void Die()
         {
-            Debug.Log("AAAA");
             Destroy(this.gameObject);
         }
 
