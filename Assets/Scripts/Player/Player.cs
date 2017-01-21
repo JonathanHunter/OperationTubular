@@ -6,8 +6,11 @@ namespace Assets.Scripts.Player {
 
 	public class Player : MonoBehaviour {
 
-		public float speed = 3;
-		public float maxSpeed = 5;
+		public float acceleration = 0.5f;
+		public float decceleration = 8f;
+		public float defaultSpeed = 3f; //if you don't use acceleration
+		public float maxSpeed = 5f;
+		private float speed = 0;
 
 		public float rotationSpeed = 180;
 		public float maxRotation = 15;
@@ -28,15 +31,29 @@ namespace Assets.Scripts.Player {
 		void Update () {
 			if(this.getLeftPressed()){
 				this.isPlayerMoving = true;
-				this.moveHorizontal(-1f);
+				this.handlePlayerMove(-1f);
 				this.lean(-1f);
 			} else if(this.getRightPressed()) {
 				this.isPlayerMoving = true;
-				this.moveHorizontal(1f);
+				this.handlePlayerMove(1f);
 				this.lean(1f);
 			} else {
+				if(this.useAcceleration){
+					if(Mathf.Abs(this.speed) < 0.8f) {
+						this.speed = 0f;
+					}
+
+					if(Mathf.Abs(this.speed) > 0){
+						var deceVal = (this.speed < 0 ? this.decceleration : -this.decceleration) * Time.deltaTime;
+						this.speed += deceVal;
+					}
+					
+				}
 				this.isPlayerMoving = false;
 			}
+
+			//we're constantly moving the character
+			this.moveHorizontal();
 
 			if(this.getJumpPressed() && !this.getIsJumping()){
 				this.actionJump();
@@ -53,9 +70,29 @@ namespace Assets.Scripts.Player {
 			}
 		}
 
+		// Handlers
+		private void handlePlayerMove(float magnitude) {
+			if(this.useAcceleration) {
+				this.speed = this.speed + this.acceleration * magnitude;
+			} else {
+				this.speed = defaultSpeed * magnitude;
+			}
+			if(this.speed > this.maxSpeed) {
+				this.speed = this.maxSpeed * magnitude;
+			}
+			this.moveHorizontal();
+		}
 		// Actions
-		private void moveHorizontal(float magnitude) {
-			transform.Translate(Vector3.right * magnitude * this.speed * Time.deltaTime, Space.World);
+		private void moveHorizontal() {
+			if(this.speed > this.maxSpeed) {
+				this.speed = this.maxSpeed;
+			} else if(this.speed < -this.maxSpeed) {
+				this.speed = -this.maxSpeed;
+			}
+			// print(this.speed);
+			if(this.speed != 0){
+				transform.Translate(Vector3.right * this.speed * Time.deltaTime, Space.World);
+			}
 		}
 
 		private void actionJump() {
@@ -65,14 +102,11 @@ namespace Assets.Scripts.Player {
 		//TODO update this to use getRelativeRotation()
 		private void lean(float magnitude) {
 			float currRot = transform.localEulerAngles.z;
-			//moving left: rotate positive
-			//moving right: rotate negative
+			//moving left: rotate positive, moving right: rotate negative
 			float rotateAttempt = currRot - magnitude * this.rotationSpeed * Time.deltaTime;
 
 			float direction = Mathf.Ceil(magnitude);
 			float max360 = 360f - this.maxRotation;
-
-			// print("current: " + currRot + " max: " + maxRotation);
 
 			if(direction > 0 && (currRot < -this.maxRotation || (currRot > 180 && currRot < max360) )) {//right
 				//do not rotate
@@ -94,7 +128,7 @@ namespace Assets.Scripts.Player {
 		}
 
 		public bool getShouldBob() {
-			return !this.isJumping && !this.isPlayerMoving;
+			return this.shouldBob && !this.getIsJumping() && !this.isPlayerMoving;
 		}
 
 		//placeholder for input manager telling me what to do
