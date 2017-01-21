@@ -83,5 +83,11 @@ namespace Assets.Scripts.Player {
 			float absPercent = Mathf.Abs(rotationValue) / maxRotation;
 			return absPercent * direction;
 		}
+
+
+        public static bool nearZero(float i, float n)
+        {
+            return -n <= i && i <= n;
+        }
 	}
 }
