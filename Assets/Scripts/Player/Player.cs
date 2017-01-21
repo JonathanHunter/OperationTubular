@@ -386,7 +386,7 @@ namespace Assets.Scripts.Player
             if (collision.gameObject.tag == "EnemyBullet")
             {
                 hit = true;
-                damage = collision.gameObject.GetComponent<Bullets.Bullet>().damage;
+                damage = collision.gameObject.GetComponent<Bullets.Bomb>().damage;
             }
             if (collision.gameObject.tag == "Shockwave")
             {
