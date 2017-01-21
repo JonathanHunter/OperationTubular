@@ -24,6 +24,6 @@ public class SpeedlineGenerator : MonoBehaviour {
     {
         temp = Instantiate<SpeedlineObject>(linePic);
         linePic.myParent = this;
-        temp.transform.position = new Vector3(Random.Range(4, 6), Random.Range(4, 6), Random.Range(4, 6));
+        temp.transform.position = new Vector3(Random.Range(-6, 6), Random.Range(-6, 6), Random.Range(-6, 6));
     }
 }

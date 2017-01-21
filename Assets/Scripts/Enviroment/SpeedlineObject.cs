@@ -26,7 +26,7 @@ public class SpeedlineObject : MonoBehaviour {
     {
         Quaternion rotation = Quaternion.LookRotation(myParent.transform.position - transform.position, transform.TransformDirection(Vector3.up));
         transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles);
+        //transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles);
     }
 
     public void reduce()
