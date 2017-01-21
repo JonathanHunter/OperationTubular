@@ -4,258 +4,371 @@ using Assets.Scripts.Player;
 using Assets.Scripts.Util;
 using Assets.Scripts.Manager;
 
-namespace Assets.Scripts.Player {
+namespace Assets.Scripts.Player
+{
 
-	public class Player : MonoBehaviour {
-		public int playerNum; //set this yo
-		private Vector2 playerInput = new Vector2(0, 0);
-		private Vector2 crosshairInput = new Vector2(0, 0);
-		private Vector2 triggerInput = new Vector2(0, 0);
-		
-		private Vector2 movement = new Vector2(0, 0);
+    public class Player : MonoBehaviour, Util.PlaysOnBeat
+    {
+        public float maxHealth;
 
-		public float crosshairSpeed = 8f;
-		public float crosshairSlowSpeed = 4f;
+        protected float health;
+        public int playerNum; //set this yo
+        private Vector2 playerInput = new Vector2(0, 0);
+        private Vector2 crosshairInput = new Vector2(0, 0);
+        private Vector2 triggerInput = new Vector2(0, 0);
 
-		public float acceleration = 0.8f;
-		public float decceleration = 12f;
-		public float maxSpeed = 6f;
+        private Vector2 movement = new Vector2(0, 0);
 
-		public float jumpSpeed = 15f;
-		private float jumpStartTime = 0f;
+        public float crosshairSpeed = 8f;
+        public float crosshairSlowSpeed = 4f;
 
-		public float rotationSpeed = 180;
-		public float maxRotation = 15;
+        public float acceleration = 0.8f;
+        public float decceleration = 12f;
+        public float maxSpeed = 6f;
 
-		public bool useAcceleration = true;//should the player slide when moving
-		public bool shouldBob = false;//should the player bob in the water
+        public float jumpSpeed = 15f;
+        private float jumpStartTime = 0f;
 
-		private bool isJumping = false; //is player jumping
-		private bool isPlayerMoving = false; //is player asking the character to move
-		private bool isShooting = false;//is player pew pewing
+        public float rotationSpeed = 180;
+        public float maxRotation = 15;
 
-		public GameObject myCrosshair;
+        public bool useAcceleration = true;//should the player slide when moving
+        public bool shouldBob = false;//should the player bob in the water
 
-		// Use this for initialization
-		void Start () {
-			myCrosshair = GameObject.Instantiate(myCrosshair, PlayerUtil.defaultCrosshairSpawn, Quaternion.identity) as GameObject;
-		}
-		
-		// Update is called once per frame
-		void Update () {
-			this.playerInput = PlayerUtil.getLeftJoystick(playerNum);
-			this.crosshairInput = PlayerUtil.getRightJoystick(playerNum);
-			this.triggerInput = PlayerUtil.getControllerTriggers(playerNum);
+        private bool isJumping = false; //is player jumping
+        private bool isPlayerMoving = false; //is player asking the character to move
+        private bool isShooting = false;//is player pew pewing
 
-			//Crosshair movement
-			if(this.crosshairInput.x != 0 || this.crosshairInput.y != 0) {
-				this.moveCrosshair(this.crosshairInput);
-			}
-			//Shooting
-			if(this.triggerInput.y > 0) {
-				this.isShooting = true;
-				this.actionShoot();
-			} else {
-				this.isShooting = false;
-			}
+        private bool hit;
+        private float damage;
 
-			//Horizontal Movement
-			if(this.playerInput.x < 0){
-				this.isPlayerMoving = true;
-				this.handlePlayerMove(this.playerInput.x);
-				this.lean(this.playerInput.x);
-			} else if(playerInput.x > 0) {
-				this.isPlayerMoving = true;
-				this.handlePlayerMove(this.playerInput.x);
-				this.lean(this.playerInput.x);
-			} else {
-				if(this.useAcceleration){
-					if(Mathf.Abs(this.movement.x) < 0.5f) {
-						this.movement.x = 0f;
-					}
+        public GameObject myCrosshair;
+        public Bullets.BulletPool bullets;
 
-					if(Mathf.Abs(this.movement.x) > 0){
-						var deceVal = (this.movement.x < 0 ? this.decceleration : -this.decceleration) * Time.deltaTime;
-						this.movement.x += deceVal;
-					}
-				} else {
-					this.movement.x = 0;
-				}
-				this.isPlayerMoving = false;
-			}
-			//Vertical Movement
-			if(this.getJumpPressed() && !this.getAirborne() && this.getIsOnSurface()){
-				this.actionJump();
-			}
-			if(this.isJumping) {
-				this.handleJumping();
-			}
+        // Use this for initialization
+        void Start()
+        {
+            myCrosshair = GameObject.Instantiate(myCrosshair, PlayerUtil.defaultCrosshairSpawn, Quaternion.identity) as GameObject;
+            if (TempoManager.instance == null)
+                FindObjectOfType<TempoManager>().Init();
+            TempoManager.instance.objects.Add(this);
+        }
 
-			//Passive Movement
-			if(this.getShouldBob()) {
-				// TODO properly loop animation
-				float percentInRotation = PlayerUtil.getPercentInRotation(transform.localEulerAngles.z, this.maxRotation);
+        // Update is called once per frame
+        void Update()
+        {
+            if (hit)
+            {
+                health -= damage;
+                hit = false;
+                if (health < 0)
+                    Die();
+            }
 
-				float leanCurve = Mathf.PingPong(Time.time, 2f) - 1f;
-				float leanOffset = percentInRotation;
-				float leanValue = leanCurve - leanOffset;
+            this.playerInput = PlayerUtil.getLeftJoystick(playerNum);
+            this.crosshairInput = PlayerUtil.getRightJoystick(playerNum);
+            this.triggerInput = PlayerUtil.getControllerTriggers(playerNum);
 
-				this.lean(leanValue);
-			} else {
-				//rotate back towards center
-				float percentInRotation = PlayerUtil.getPercentInRotation(transform.localEulerAngles.z, this.maxRotation);
-				this.lean(-percentInRotation);
-			}
+            //Crosshair movement
+            if (this.crosshairInput.x != 0 || this.crosshairInput.y != 0)
+            {
+                this.moveCrosshair(this.crosshairInput);
+            }
+            //Shooting
+            if (this.triggerInput.y > 0)
+            {
+                this.isShooting = true;
+                this.actionShoot();
+            }
+            else
+            {
+                this.isShooting = false;
+            }
 
-			//constantly move the character
-			this.movePlayer();
-		}
+            //Horizontal Movement
+            if (this.playerInput.x < 0)
+            {
+                this.isPlayerMoving = true;
+                this.handlePlayerMove(this.playerInput.x);
+                this.lean(this.playerInput.x);
+            }
+            else if (playerInput.x > 0)
+            {
+                this.isPlayerMoving = true;
+                this.handlePlayerMove(this.playerInput.x);
+                this.lean(this.playerInput.x);
+            }
+            else
+            {
+                if (this.useAcceleration)
+                {
+                    if (Mathf.Abs(this.movement.x) < 0.5f)
+                    {
+                        this.movement.x = 0f;
+                    }
 
-		// Handlers
-		private void handlePlayerMove(float magnitude) {
-			if(this.useAcceleration) {
-				this.movement.x = this.movement.x + this.acceleration * magnitude;
-			} else {
-				this.movement.x = this.maxSpeed * magnitude;
-			}
-			if(this.movement.x > this.maxSpeed) {
-				this.movement.x = this.maxSpeed * magnitude;
-			}
-		}
-		private void movePlayer() {
-			//check horizontal
-			if(this.movement.x > this.maxSpeed) {
-				this.movement.x = this.maxSpeed;
-			} else if(this.movement.x < -this.maxSpeed) {
-				this.movement.x = -this.maxSpeed;
-			}
+                    if (Mathf.Abs(this.movement.x) > 0)
+                    {
+                        var deceVal = (this.movement.x < 0 ? this.decceleration : -this.decceleration) * Time.deltaTime;
+                        this.movement.x += deceVal;
+                    }
+                }
+                else
+                {
+                    this.movement.x = 0;
+                }
+                this.isPlayerMoving = false;
+            }
+            //Vertical Movement
+            if (this.getJumpPressed() && !this.getAirborne() && this.getIsOnSurface())
+            {
+                this.actionJump();
+            }
+            if (this.isJumping)
+            {
+                this.handleJumping();
+            }
 
-			//check vertical
-			if(transform.position.y > PlayerUtil.surfacePos) {
-				this.movement.y -= 0.5f;
-			} else if(transform.position.y <= PlayerUtil.surfacePos && (Time.time - this.jumpStartTime) > 0.5f) {
-				this.movement.y = this.movement.y * 0.5f;
-				Vector2 targetPos = new Vector2(transform.position.x, PlayerUtil.surfacePos);
-				transform.position = Vector2.Lerp(transform.position, targetPos, 0.1f);
-			}
+            //Passive Movement
+            if (this.getShouldBob())
+            {
+                // TODO properly loop animation
+                float percentInRotation = PlayerUtil.getPercentInRotation(transform.localEulerAngles.z, this.maxRotation);
 
-			//move
-			transform.Translate(this.movement * Time.deltaTime, Space.World);
+                float leanCurve = Mathf.PingPong(Time.time, 2f) - 1f;
+                float leanOffset = percentInRotation;
+                float leanValue = leanCurve - leanOffset;
 
-			// check bounds
-			Vector2 xBounds = GameManager.xBounds;
-			Vector2 yBounds = GameManager.yBounds;
+                this.lean(leanValue);
+            }
+            else
+            {
+                //rotate back towards center
+                float percentInRotation = PlayerUtil.getPercentInRotation(transform.localEulerAngles.z, this.maxRotation);
+                this.lean(-percentInRotation);
+            }
 
-			if(transform.position.x < xBounds.x) {
-				transform.position = new Vector2(xBounds.x, transform.position.y);
-				this.movement.x *= -1;
-			} else if(transform.position.x > xBounds.y) {
-				transform.position = new Vector2(xBounds.y, transform.position.y);
-				this.movement.x *= -1;
-			}
+            //constantly move the character
+            this.movePlayer();
+        }
 
-			if(transform.position.y > yBounds.x) {
-				transform.position = new Vector2(transform.position.y, yBounds.x);
-				this.movement.y *= -1;
-			} else if(transform.position.y < yBounds.y) {
-				transform.position = new Vector2(transform.position.y, yBounds.y);
-				this.movement.y *= -1;
-			}
-		}
+        // Handlers
+        private void handlePlayerMove(float magnitude)
+        {
+            if (this.useAcceleration)
+            {
+                this.movement.x = this.movement.x + this.acceleration * magnitude;
+            }
+            else
+            {
+                this.movement.x = this.maxSpeed * magnitude;
+            }
+            if (this.movement.x > this.maxSpeed)
+            {
+                this.movement.x = this.maxSpeed * magnitude;
+            }
+        }
+        private void movePlayer()
+        {
+            //check horizontal
+            if (this.movement.x > this.maxSpeed)
+            {
+                this.movement.x = this.maxSpeed;
+            }
+            else if (this.movement.x < -this.maxSpeed)
+            {
+                this.movement.x = -this.maxSpeed;
+            }
 
-		//TODO: change ordering of check
-		private void moveCrosshair(Vector2 inputValues) {
-			Vector2 xBounds = GameManager.xBounds;
-			Vector2 yBounds = GameManager.yBounds;
+            //check vertical
+            if (transform.position.y > PlayerUtil.surfacePos)
+            {
+                this.movement.y -= 0.5f;
+            }
+            else if (transform.position.y <= PlayerUtil.surfacePos && (Time.time - this.jumpStartTime) > 0.5f)
+            {
+                this.movement.y = this.movement.y * 0.5f;
+                Vector2 targetPos = new Vector2(transform.position.x, PlayerUtil.surfacePos);
+                transform.position = Vector2.Lerp(transform.position, targetPos, 0.1f);
+            }
 
-			Vector2 trueCrossSpeed = this.getIsShooting() ? 
-										new Vector2(this.crosshairSlowSpeed, this.crosshairSlowSpeed) : 
-										new Vector2(this.crosshairSpeed, this.crosshairSpeed);
-			
-			if(inputValues.x < 0 && myCrosshair.transform.position.x < xBounds.x) {
-				trueCrossSpeed.x = 0;
-			} else if(inputValues.x > 0 && myCrosshair.transform.position.x > xBounds.y) {
-				trueCrossSpeed.x = 0;
-			}
+            //move
+            transform.Translate(this.movement * Time.deltaTime, Space.World);
 
-			if(inputValues.y < 0 && myCrosshair.transform.position.y > yBounds.x) {
-				trueCrossSpeed.y = 0;
-			} else if(inputValues.y > 0 && myCrosshair.transform.position.y < yBounds.y) {
-				trueCrossSpeed.y = 0;
-			}
+            // check bounds
+            Vector2 xBounds = GameManager.xBounds;
+            Vector2 yBounds = GameManager.yBounds;
 
-			//move
-			Vector2 crosshairMove = new Vector2(inputValues.x * trueCrossSpeed.x, -1 * inputValues.y * trueCrossSpeed.y);
-			myCrosshair.transform.Translate(crosshairMove * Time.deltaTime, Space.World);
-		}
+            if (transform.position.x < xBounds.x)
+            {
+                transform.position = new Vector2(xBounds.x, transform.position.y);
+                this.movement.x *= -1;
+            }
+            else if (transform.position.x > xBounds.y)
+            {
+                transform.position = new Vector2(xBounds.y, transform.position.y);
+                this.movement.x *= -1;
+            }
 
-		private void handleJumping() {
-			float timeSinceJumping = (Time.time - this.jumpStartTime);
+            if (transform.position.y > yBounds.x)
+            {
+                transform.position = new Vector2(transform.position.y, yBounds.x);
+                this.movement.y *= -1;
+            }
+            else if (transform.position.y < yBounds.y)
+            {
+                transform.position = new Vector2(transform.position.y, yBounds.y);
+                this.movement.y *= -1;
+            }
+        }
 
-			if(this.getIsOnSurface() && timeSinceJumping > 0.5f){
-				this.isJumping = false;
-			}
-		}
+        //TODO: change ordering of check
+        private void moveCrosshair(Vector2 inputValues)
+        {
+            Vector2 xBounds = GameManager.xBounds;
+            Vector2 yBounds = GameManager.yBounds;
 
-		//Actions
-		private void actionShoot() {
-			//you're shooting
-		}
+            Vector2 trueCrossSpeed = this.getIsShooting() ?
+                                        new Vector2(this.crosshairSlowSpeed, this.crosshairSlowSpeed) :
+                                        new Vector2(this.crosshairSpeed, this.crosshairSpeed);
 
-		private void actionJump() {
-			if(!this.getAirborne()) {
-				this.isJumping = true;
-				this.jumpStartTime = Time.time;
-				this.movement.y = this.jumpSpeed;
-			}
-		}
+            if (inputValues.x < 0 && myCrosshair.transform.position.x < xBounds.x)
+            {
+                trueCrossSpeed.x = 0;
+            }
+            else if (inputValues.x > 0 && myCrosshair.transform.position.x > xBounds.y)
+            {
+                trueCrossSpeed.x = 0;
+            }
 
-		//TODO update this to use getRelativeRotation()
-		private void lean(float magnitude) {
-			float currRot = transform.localEulerAngles.z;
-			//moving left: rotate positive, moving right: rotate negative
-			float rotateAttempt = currRot - magnitude * this.rotationSpeed * Time.deltaTime;
+            if (inputValues.y < 0 && myCrosshair.transform.position.y > yBounds.x)
+            {
+                trueCrossSpeed.y = 0;
+            }
+            else if (inputValues.y > 0 && myCrosshair.transform.position.y < yBounds.y)
+            {
+                trueCrossSpeed.y = 0;
+            }
 
-			float direction = Mathf.Ceil(magnitude);
-			float max360 = 360f - this.maxRotation;
+            //move
+            Vector2 crosshairMove = new Vector2(inputValues.x * trueCrossSpeed.x, -1 * inputValues.y * trueCrossSpeed.y);
+            myCrosshair.transform.Translate(crosshairMove * Time.deltaTime, Space.World);
+        }
 
-			if(direction > 0 && (currRot < -this.maxRotation || (currRot > 180 && currRot < max360) )) {//right
-				//do not rotate
-			} else if(direction < 0 && (currRot < 180 && currRot > this.maxRotation)) {//left
-				//do not rotate
-			} else {
-				transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, rotateAttempt);
-			}
-			
-		}
+        private void handleJumping()
+        {
+            float timeSinceJumping = (Time.time - this.jumpStartTime);
 
-		//getters
-		public bool getAirborne() {
-			return this.isJumping;
-		}
+            if (this.getIsOnSurface() && timeSinceJumping > 0.5f)
+            {
+                this.isJumping = false;
+            }
+        }
 
-		public bool getIsShooting() {
-			return this.isShooting;
-		}
-		public bool getIsOnSurface() {
-			if(transform.position.y <= PlayerUtil.surfacePos){
-				return true;
-			} else {
-				return false;
-			}
-			// return this.isOnSurface;
-		}
+        //Actions
+        private void actionShoot()
+        {
+            //you're shooting
+        }
 
-		public bool getShouldBob() {
-			return this.shouldBob && !this.getAirborne() && !this.isPlayerMoving;
-		}
+        private void actionJump()
+        {
+            if (!this.getAirborne())
+            {
+                this.isJumping = true;
+                this.jumpStartTime = Time.time;
+                this.movement.y = this.jumpSpeed;
+            }
+        }
 
-		public bool getJumpPressed() {
-			if(this.triggerInput.x > 0){
-				return true;
-			}
-			return false;
-		}
-	}
+        //TODO update this to use getRelativeRotation()
+        private void lean(float magnitude)
+        {
+            float currRot = transform.localEulerAngles.z;
+            //moving left: rotate positive, moving right: rotate negative
+            float rotateAttempt = currRot - magnitude * this.rotationSpeed * Time.deltaTime;
+
+            float direction = Mathf.Ceil(magnitude);
+            float max360 = 360f - this.maxRotation;
+
+            if (direction > 0 && (currRot < -this.maxRotation || (currRot > 180 && currRot < max360)))
+            {//right
+             //do not rotate
+            }
+            else if (direction < 0 && (currRot < 180 && currRot > this.maxRotation))
+            {//left
+             //do not rotate
+            }
+            else
+            {
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, rotateAttempt);
+            }
+
+        }
+
+        //getters
+        public bool getAirborne()
+        {
+            return this.isJumping;
+        }
+
+        public bool getIsShooting()
+        {
+            return this.isShooting;
+        }
+        public bool getIsOnSurface()
+        {
+            if (transform.position.y <= PlayerUtil.surfacePos)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            // return this.isOnSurface;
+        }
+
+        public bool getShouldBob()
+        {
+            return this.shouldBob && !this.getAirborne() && !this.isPlayerMoving;
+        }
+
+        public bool getJumpPressed()
+        {
+            if (this.triggerInput.x > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void PlayOnBeat()
+        {
+            if (isShooting)
+                bullets.Spawn(transform.position, myCrosshair.transform.position);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.tag == "EnemyBullet")
+            {
+                hit = true;
+                damage = collision.gameObject.GetComponent<Bullets.Bullet>().damage;
+            }
+            if (collision.gameObject.tag == "Shockwave")
+            {
+                hit = true;
+                damage = 1000000;
+            }
+        }
+
+        private void Die()
+        {
+            TempoManager.instance.objects.Remove(this);
+            GameManager.instance.Remove(this.gameObject);
+            Destroy(this.gameObject);
+        }
+    }
 
 }

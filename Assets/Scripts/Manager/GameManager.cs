@@ -28,5 +28,14 @@ namespace Assets.Scripts.Manager
                 return;
             }
         }
+
+        public void Remove(GameObject obj)
+        {
+            System.Collections.Generic.List<GameObject> objs = new System.Collections.Generic.List<GameObject>();
+            foreach (GameObject g in players)
+                if (g != obj)
+                    objs.Add(g);
+            players = objs.ToArray();
+        }
     }
 }

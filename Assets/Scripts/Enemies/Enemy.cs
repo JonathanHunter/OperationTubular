@@ -92,6 +92,7 @@ namespace Assets.Scripts.Enemies
             {
                 hit = true;
                 damage = collision.gameObject.GetComponent<Bullets.Bullet>().damage;
+                Debug.Log(gameObject.name + " collided with a bullet for " + damage + " damage");
             }
             if (collision.gameObject.tag == "Shockwave")
             {
