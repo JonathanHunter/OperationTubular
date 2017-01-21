@@ -6,6 +6,7 @@ namespace Assets.Scripts.Enemies
     abstract class Enemy : MonoBehaviour
     {
         public float maxHealth;
+        public GameObject explosion;
 
         protected float health;
 
@@ -50,10 +51,16 @@ namespace Assets.Scripts.Enemies
                     health -= damage;
                     hit = false;
                     if (health <= 0)
+                    {
+                        SFXManager.instance.Spawn("EnemyGetHit");
                         dead = true;
+                    }
                 }
                 if (dead)
+                {
+                    SFXManager.instance.Spawn("EnemyDie");
                     Die();
+                }
                 else
                     Run();
             }

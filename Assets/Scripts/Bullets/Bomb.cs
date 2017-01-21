@@ -14,6 +14,7 @@ namespace Assets.Scripts.Bullets
         public void ExplosionDone()
         {
             manager.Recover(index);
+            Manager.SFXManager.instance.Spawn("KrakenAttack");
         }
 
         public void Init()

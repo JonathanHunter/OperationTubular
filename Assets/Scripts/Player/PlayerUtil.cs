@@ -9,6 +9,33 @@ namespace Assets.Scripts.Player {
 		public static Vector3 defaultPlayerSpawn = new Vector3(-8, surfacePos, -1);
 		public static Vector3 defaultCrosshairSpawn = new Vector3(1, 4, -1);
 
+		public static Vector2 playerSize = new Vector2(2f, 3.2f); //collider - total width, total height
+
+
+		/*
+			creates a vector3 of which direction it came from
+			@param me (Vector3) - player persepctive position
+			@param you (Vector3) - thing collided into position
+			@return (Vector3) - (x: -1 left to 1 right,
+								 y: -1 top to 1 bottom,
+								 z: -1 towards camera to 1 away camera )
+		*/
+		public static Vector3 getCollisionDirection(Vector3 me, Vector3 you) {
+			Vector3 dir = Vector3.zero;
+			if(PlayerUtil.nearZero(me.x - you.x, 0.3f)) {
+				dir.x = 0;
+			} else {
+				dir.x = me.x < you.x ? -1 : 1;
+			}
+
+			if(PlayerUtil.nearZero(me.y - you.y, 0.3f)) {
+				dir.y = 0;
+			} else {
+				dir.y = me.y < you.y ? -1 : 1;
+			}
+			//TODO: z direction
+			return dir;
+		}
 		/*
 			@param player (int) - player num
 			@return Vector2 - the values of the left joystick
@@ -83,5 +110,11 @@ namespace Assets.Scripts.Player {
 			float absPercent = Mathf.Abs(rotationValue) / maxRotation;
 			return absPercent * direction;
 		}
+
+
+        public static bool nearZero(float i, float n)
+        {
+            return -n <= i && i <= n;
+        }
 	}
 }

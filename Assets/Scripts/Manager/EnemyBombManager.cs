@@ -55,7 +55,7 @@ namespace Assets.Scripts.Manager
             cellSize = new Vector2((GameManager.yBounds.x - GameManager.yBounds.y) / grid.GetLength(0), (GameManager.xBounds.y - GameManager.xBounds.x) / grid.GetLength(1));
         }
 
-        public void SpawnAt(int r, int c)
+        public Vector2 SpawnAt(int r, int c)
         {
             if (!inited)
                 Init();
@@ -67,7 +67,11 @@ namespace Assets.Scripts.Manager
                     new Vector3(c * cellSize.y - GameManager.xBounds.y, -r * cellSize.x - GameManager.yBounds.y, bombs[index].transform.position.z);
                 bombs[index].Init();
                 grid[r, c] = bombs[index];
+
             }
+            if (grid[r, c] != null)
+                return grid[r, c].transform.position;
+            return Vector2.zero;
         }
 
         public void PlayOnBeat()

@@ -23,9 +23,9 @@ GameObject:
   - 61: {fileID: 61000012081334230}
   - 114: {fileID: 114000013800435802}
   - 95: {fileID: 95000010565276272}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: EnemyBomb
-  m_TagString: EnemyBullet
+  m_TagString: EnemyBomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

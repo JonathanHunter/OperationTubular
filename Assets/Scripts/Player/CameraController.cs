@@ -30,7 +30,9 @@ public class CameraController : MonoBehaviour {
 		if(trackableCount > 0){
 			Vector3 sumTrackables = defaultPos;
 			for(int i=0; i<trackableCount; i++){
-				sumTrackables += this.trackables[0].transform.position;
+				if(this.trackables[i] != null){
+					sumTrackables += this.trackables[i].transform.position;
+				}
 			}
 
 			Vector3 newPos = sumTrackables / (trackableCount + 1);

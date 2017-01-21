@@ -5,6 +5,7 @@ namespace Assets.Scripts.Enemies
 {
     class Helicopter : Enemy
     {
+        public Animator muzzlefire;
         public float shootTime;
         public float numShots;
         public float delay;
@@ -71,7 +72,8 @@ namespace Assets.Scripts.Enemies
                     }
                     int x = (int)EnemyBombManager.instance.gridSize.x - 1;
                     int y = (int)(((transform.position.x - GameManager.xBounds.x) / (GameManager.xBounds.y - GameManager.xBounds.x)) * EnemyBombManager.instance.gridSize.y);
-                    EnemyBombManager.instance.SpawnAt(x, y);
+                    EnemyBulletManager.instance.Spawn(transform.position, EnemyBombManager.instance.SpawnAt(x, y));
+                    muzzlefire.SetTrigger("Shoot");
                 }
             }
         }

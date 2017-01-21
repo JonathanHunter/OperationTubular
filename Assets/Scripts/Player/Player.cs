@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Assets.Scripts.Player;
 using Assets.Scripts.Util;
 using Assets.Scripts.Manager;
 
@@ -9,28 +7,33 @@ namespace Assets.Scripts.Player
 
     public class Player : MonoBehaviour, Util.PlaysOnBeat
     {
-        public float maxHealth;
-
-        protected float health;
+        public Animator muzzlefire;
         public int playerNum; //set this yo
         private Vector2 playerInput = new Vector2(0, 0);
         private Vector2 crosshairInput = new Vector2(0, 0);
         private Vector2 triggerInput = new Vector2(0, 0);
-
         private Vector2 movement = new Vector2(0, 0);
 
-        public float crosshairSpeed = 12f;
+        public float maxHealth = 10;
+        protected float health = 10;
+
+        public float crosshairSpeed = 12f;//crosshair movement
         public float crosshairSlowSpeed = 4f;
 
-        public float acceleration = 0.8f;
+        public float acceleration = 0.8f;//movement
         public float decceleration = 12f;
         public float maxSpeed = 6f;
 
-        public float jumpSpeed = 15f;
-        private float jumpStartTime = 0f;
+        public float jumpSpeed = 15f;//jumping
+        public float jumpDecceleration = 15f;
+        private float jumpStartTime = 0;
 
-        public float rotationSpeed = 180;
+        public float rotationSpeed = 180;//leaning
         public float maxRotation = 15;
+
+        public float horizontalPlayerBumper = 8f;//collide with other player
+        public Vector2 verticalPlayerBumper = new Vector2(6f, 8f);
+        public float gotHitBump = 15f;
 
         public bool useAcceleration = true;//should the player slide when moving
         public bool shouldBob = false;//should the player bob in the water
@@ -38,6 +41,7 @@ namespace Assets.Scripts.Player
         private bool isJumping = false; //is player jumping
         private bool isPlayerMoving = false; //is player asking the character to move
         private bool isShooting = false;//is player pew pewing
+        private static int shooting;
 
         private bool hit;
         private float damage;
@@ -48,9 +52,15 @@ namespace Assets.Scripts.Player
         public Animator anim;
 
 
+        public float invulerabilityTime = 1f;
+        private float invulerability;
+        private bool render;
+
+
         // Use this for initialization
         void Start()
         {
+            shooting = 0;
             transform.position = new Vector3(PlayerUtil.defaultPlayerSpawn.x + 4 * playerNum, 
             								 PlayerUtil.defaultPlayerSpawn.y,
             								 PlayerUtil.defaultPlayerSpawn.z);
@@ -67,39 +77,20 @@ namespace Assets.Scripts.Player
             state = Animator.StringToHash("State");
         }
 
-        private bool nearZero(float i, float n)
+        protected virtual void Render(bool render)
         {
-            return -n <= i && i <= n;
+            GetComponent<SpriteRenderer>().enabled = render;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (hit)
-            {
-                health -= damage;
-                damage = 0;
-                hit = false;
-                if (health <= 0)
-                    Die();
-            }
+            //Always check Life/Death first
+            this.handleHealth();
 
             this.playerInput = PlayerUtil.getLeftJoystick(playerNum);
             this.crosshairInput = PlayerUtil.getRightJoystick(playerNum);
             this.triggerInput = PlayerUtil.getControllerTriggers(playerNum);
-            Vector2 pos = myCrosshair.transform.position;
-            if (nearZero(pos.x, 1) && nearZero(pos.y, 1) || nearZero(pos.x, 1) && pos.y < -1)
-                anim.SetInteger(state, 0);
-            else if (pos.x < -1 && pos.y < -1)
-                anim.SetInteger(state, 1);
-            else if (pos.x < -1 && pos.y > 1)
-                anim.SetInteger(state, 2);
-            else if (nearZero(pos.x, 1) && pos.y > 0)
-                anim.SetInteger(state, 3);
-            else if (pos.x > 1 && pos.y > 1)
-                anim.SetInteger(state, 4);
-            else if (pos.x > 1 && pos.y < -1)
-                anim.SetInteger(state, 5);
 
             //Crosshair movement
             if (this.crosshairInput.x != 0 || this.crosshairInput.y != 0)
@@ -182,9 +173,76 @@ namespace Assets.Scripts.Player
 
             //constantly move the character
             this.movePlayer();
+            this.handlePlayerAnimation();
         }
 
         // Handlers
+        private void handlePlayerDidCollide(Collider2D collider) {
+    		Vector3 myPos = transform.position;
+        	Vector3 theirPos = collider.transform.position;
+        	
+        	Vector3 direction = PlayerUtil.getCollisionDirection(myPos, theirPos);
+        	if(Mathf.Abs(direction.x) > 0){
+        		this.handlePlayerMove(direction.x * this.horizontalPlayerBumper);
+        		this.lean(direction.x * 0.6f);
+        	}
+        	if(direction.y < 0){
+        		this.movement.y = direction.y * this.verticalPlayerBumper.x;
+        	} else if(direction.y > 0){
+        		this.movement.y = direction.y * this.verticalPlayerBumper.y;
+        	}
+        }
+
+        private void handleHealth() {
+			if (hit)
+            {
+                if (invulerability <= 0)
+                {
+                    health -= damage;
+                    invulerability = invulerabilityTime;
+                    SFXManager.instance.Spawn("PlayerGetHit");
+
+                    this.movement.y += this.gotHitBump;
+                }
+                hit = false;
+                damage = 0;
+            }
+            if (invulerability > 0)
+            {
+                render = !render;
+                Render(render);
+                invulerability -= Time.deltaTime;
+            }
+            else if (!render)
+            {
+                render = true;
+                Render(true);
+            }
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+
+        private void handlePlayerAnimation() {
+            Vector2 pos = myCrosshair.transform.position;
+            Vector2 target = new Vector2(transform.position.x, 1f);//horizontal divider, vertical divider
+            float margin = 1f;
+
+			if (PlayerUtil.nearZero(pos.x - target.x, margin) && PlayerUtil.nearZero(pos.y - target.y, margin) || PlayerUtil.nearZero(pos.x - target.x, margin) && pos.y < target.y)
+                anim.SetInteger(state, 0);//torso middle low
+            else if (pos.x < target.x && pos.y < target.y)
+                anim.SetInteger(state, 1);//torso left low
+            else if (pos.x < target.x && pos.y > target.y)
+                anim.SetInteger(state, 2);//torso left high
+            else if (PlayerUtil.nearZero(pos.x - target.x, margin) && pos.y > 0)
+                anim.SetInteger(state, 3);//torso middle high
+            else if (pos.x > target.x && pos.y > target.y)
+                anim.SetInteger(state, 4);//torso right high
+            else if (pos.x > target.x && pos.y < target.y)
+                anim.SetInteger(state, 5);//torso right low
+        }
+
         private void handlePlayerMove(float magnitude)
         {
             if (this.useAcceleration)
@@ -378,12 +436,24 @@ namespace Assets.Scripts.Player
         public void PlayOnBeat()
         {
             if (isShooting)
+            {
+                if (shooting == 0)
+                    shooting = playerNum;
+                if (shooting == playerNum)
+                    SFXManager.instance.Spawn("Shoot");
                 bullets.SpawnFollow(new Vector3(transform.position.x, transform.position.y, 1), myCrosshair.transform);
+                muzzlefire.SetTrigger("Shoot");
+            }
+            else
+            {
+                if (shooting == playerNum)
+                    shooting = 0;
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.tag == "EnemyBullet")
+            if (collision.gameObject.tag == "EnemyBomb")
             {
                 hit = true;
                 damage = collision.gameObject.GetComponent<Bullets.Bomb>().damage;
@@ -393,6 +463,10 @@ namespace Assets.Scripts.Player
                 hit = true;
                 damage = 1000000;
             }
+            if (collision.gameObject.tag == "Player")
+            {
+                this.handlePlayerDidCollide(collision);
+            }
         }
 
         private void Die()
@@ -400,6 +474,7 @@ namespace Assets.Scripts.Player
             TempoManager.instance.objects.Remove(this);
             GameManager.instance.Remove(this.gameObject);
             Destroy(this.gameObject);
+            Destroy(this.myCrosshair);
         }
     }
 
