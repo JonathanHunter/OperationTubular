@@ -48,6 +48,11 @@ namespace Assets.Scripts.Player
         public Animator anim;
 
 
+        public float invulerabilityTime = 1f;
+        private float invulerability;
+        private bool render;
+
+
         // Use this for initialization
         void Start()
         {
@@ -72,16 +77,38 @@ namespace Assets.Scripts.Player
             return -n <= i && i <= n;
         }
 
+        protected virtual void Render(bool render)
+        {
+            GetComponent<SpriteRenderer>().enabled = render;
+        }
+
         // Update is called once per frame
         void Update()
         {
             if (hit)
             {
-                health -= damage;
-                damage = 0;
+                if (invulerability <= 0)
+                {
+                    health -= damage;
+                    invulerability = invulerabilityTime;
+                }
                 hit = false;
-                if (health <= 0)
-                    Die();
+                damage = 0;
+            }
+            if (invulerability > 0)
+            {
+                render = !render;
+                Render(render);
+                invulerability -= Time.deltaTime;
+            }
+            else if (!render)
+            {
+                render = true;
+                Render(true);
+            }
+            if (health <= 0)
+            {
+                Die();
             }
 
             this.playerInput = PlayerUtil.getLeftJoystick(playerNum);

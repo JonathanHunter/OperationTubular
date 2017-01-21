@@ -277,6 +277,7 @@ MonoBehaviour:
     type: 2}
   bullets: {fileID: 32589301}
   anim: {fileID: 32589297}
+  invulerabilityTime: 1
 --- !u!114 &32589301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,6 +433,7 @@ MonoBehaviour:
     type: 2}
   bullets: {fileID: 40174381}
   anim: {fileID: 40174377}
+  invulerabilityTime: 1
 --- !u!114 &40174381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1241,7 +1243,7 @@ Transform:
   - {fileID: 399727511}
   - {fileID: 2089779677}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
 --- !u!1 &701014092 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000013324035938, guid: dd815c9cebbc02c42b1d2395f5d48df3,
@@ -1523,7 +1525,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011644895260, guid: dd815c9cebbc02c42b1d2395f5d48df3, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4000011644895260, guid: dd815c9cebbc02c42b1d2395f5d48df3, type: 2}
       propertyPath: m_LocalScale.y

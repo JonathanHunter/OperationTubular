@@ -23,6 +23,7 @@ GameObject:
   - 61: {fileID: 61000013011951184}
   - 50: {fileID: 50000012377788456}
   - 114: {fileID: 114000011497996416}
+  - 95: {fileID: 95000010582870602}
   m_Layer: 9
   m_Name: Helicopter
   m_TagString: Enemy
@@ -74,6 +75,23 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 3, y: 4}
+--- !u!95 &95000010582870602
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012050653342}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6fe1a8f9a6c03b94e9ce7051b2a54bd9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114000011497996416
 MonoBehaviour:
   m_ObjectHideFlags: 1
