@@ -28,7 +28,7 @@ namespace Assets.Scripts.Player {
 		public float maxRotation = 15;
 
 		public bool useAcceleration = true;//should the player slide when moving
-		public bool shouldBob = true;//should the player bob in the water
+		public bool shouldBob = false;//should the player bob in the water
 
 		private bool isJumping = false; //is player jumping
 		private bool isPlayerMoving = false; //is player asking the character to move
@@ -123,12 +123,14 @@ namespace Assets.Scripts.Player {
 			}
 		}
 		private void movePlayer() {
+			//check horizontal
 			if(this.movement.x > this.maxSpeed) {
 				this.movement.x = this.maxSpeed;
 			} else if(this.movement.x < -this.maxSpeed) {
 				this.movement.x = -this.maxSpeed;
 			}
 
+			//check vertical
 			if(transform.position.y > PlayerUtil.surfacePos) {
 				this.movement.y -= 0.5f;
 			} else if(transform.position.y <= PlayerUtil.surfacePos && (Time.time - this.jumpStartTime) > 0.5f) {
@@ -137,8 +139,31 @@ namespace Assets.Scripts.Player {
 				transform.position = Vector2.Lerp(transform.position, targetPos, 0.1f);
 			}
 
+			//move
 			transform.Translate(this.movement * Time.deltaTime, Space.World);
+
+			// check bounds
+			Vector2 xBounds = GameManager.xBounds;
+			Vector2 yBounds = GameManager.yBounds;
+
+			if(transform.position.x < xBounds.x) {
+				transform.position = new Vector2(xBounds.x, transform.position.y);
+				this.movement.x *= -1;
+			} else if(transform.position.x > xBounds.y) {
+				transform.position = new Vector2(xBounds.y, transform.position.y);
+				this.movement.x *= -1;
+			}
+
+			if(transform.position.y > yBounds.x) {
+				transform.position = new Vector2(transform.position.y, yBounds.x);
+				this.movement.y *= -1;
+			} else if(transform.position.y < yBounds.y) {
+				transform.position = new Vector2(transform.position.y, yBounds.y);
+				this.movement.y *= -1;
+			}
 		}
+
+		//TODO: change ordering of check
 		private void moveCrosshair(Vector2 inputValues) {
 			Vector2 xBounds = GameManager.xBounds;
 			Vector2 yBounds = GameManager.yBounds;
@@ -159,6 +184,7 @@ namespace Assets.Scripts.Player {
 				trueCrossSpeed.y = 0;
 			}
 
+			//move
 			Vector2 crosshairMove = new Vector2(inputValues.x * trueCrossSpeed.x, -1 * inputValues.y * trueCrossSpeed.y);
 			myCrosshair.transform.Translate(crosshairMove * Time.deltaTime, Space.World);
 		}
