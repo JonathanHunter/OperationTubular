@@ -284,9 +284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6067b178203f64eae9cf1a487c49530d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 0.5
-  decceleration: 8
-  defaultSpeed: 3
+  acceleration: 0.8
+  decceleration: 12
   maxSpeed: 5
   rotationSpeed: 180
   maxRotation: 15
