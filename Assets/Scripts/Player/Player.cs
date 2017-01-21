@@ -25,7 +25,8 @@ namespace Assets.Scripts.Player
         public float maxSpeed = 6f;
 
         public float jumpSpeed = 15f;//jumping
-        public float jumpDecceleration = 15f;
+        public float jumpDecceleration = 0.5f;
+        private float maxJumpSpeed = 18f;
         private float jumpStartTime = 0;
 
         public float rotationSpeed = 180;//leaning
@@ -146,10 +147,6 @@ namespace Assets.Scripts.Player
             if (this.getJumpPressed() && !this.getAirborne() && this.getIsOnSurface())
             {
                 this.actionJump();
-            }
-            if (this.isJumping)
-            {
-                this.handleJumping();
             }
 
             //Passive Movement
@@ -273,13 +270,20 @@ namespace Assets.Scripts.Player
             //check vertical
             if (transform.position.y > PlayerUtil.surfacePos)
             {
-                this.movement.y -= 0.5f;
+                this.movement.y -= this.jumpDecceleration;
             }
-            else if (transform.position.y <= PlayerUtil.surfacePos && (Time.time - this.jumpStartTime) > 0.5f)
+            else if (this.getIsOnSurface() && (Time.time - this.jumpStartTime) > 0.5f)
             {
+            	this.isJumping = false;
                 this.movement.y = this.movement.y * 0.5f;
                 Vector2 targetPos = new Vector2(transform.position.x, PlayerUtil.surfacePos);
                 transform.position = Vector2.Lerp(transform.position, targetPos, 0.1f);
+			}
+
+            if(this.movement.y < -this.maxJumpSpeed) {
+            	this.movement.y = -this.maxJumpSpeed;
+            } else if(this.movement.y > this.maxJumpSpeed) {
+            	this.movement.y = this.maxJumpSpeed;
             }
 
             //move
@@ -303,12 +307,10 @@ namespace Assets.Scripts.Player
             if (transform.position.y > yBounds.x)
             {
                 transform.position = new Vector2(transform.position.y, yBounds.x);
-                this.movement.y *= -1;
             }
             else if (transform.position.y < yBounds.y)
             {
                 transform.position = new Vector2(transform.position.y, yBounds.y);
-                this.movement.y *= -1;
             }
         }
 
@@ -345,16 +347,6 @@ namespace Assets.Scripts.Player
             myCrosshair.transform.Translate(crosshairMove * Time.deltaTime, Space.World);
         }
 
-        private void handleJumping()
-        {
-            float timeSinceJumping = (Time.time - this.jumpStartTime);
-
-            if (this.getIsOnSurface() && timeSinceJumping > 0.5f)
-            {
-                this.isJumping = false;
-            }
-        }
-
         //Actions
         private void actionShoot()
         {
@@ -366,8 +358,8 @@ namespace Assets.Scripts.Player
             if (!this.getAirborne())
             {
                 this.isJumping = true;
-                this.jumpStartTime = Time.time;
                 this.movement.y = this.jumpSpeed;
+                this.jumpStartTime = Time.time;
             }
         }
 
