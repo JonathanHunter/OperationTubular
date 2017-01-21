@@ -425,7 +425,7 @@ namespace Assets.Scripts.Player
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.tag == "EnemyBullet")
+            if (collision.gameObject.tag == "EnemyBomb")
             {
                 hit = true;
                 damage = collision.gameObject.GetComponent<Bullets.Bomb>().damage;

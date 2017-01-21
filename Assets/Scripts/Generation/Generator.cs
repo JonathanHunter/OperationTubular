@@ -34,7 +34,7 @@ namespace Assets.Scripts.Generation
             }
             if ((spawnTimer += Time.deltaTime) >= mySpawnTime)
             {
-                waves[(int)SinusoidalRandom.Range(0, Mathf.Min(difficulty, waves.Length - 1))].Spawn();
+                waves[(int)SinusoidalRandom.Range(0, Mathf.Min(difficulty, waves.Length))].Spawn();
                 spawnTimer = 0f;
             }
         }

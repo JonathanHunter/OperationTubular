@@ -3,7 +3,7 @@ using Assets.Scripts.Manager;
 
 namespace Assets.Scripts.Enemies
 {
-    class Helicopter : Enemy
+    class Boat : Enemy
     {
         public float shootTime;
         public float numShots;
@@ -58,19 +58,18 @@ namespace Assets.Scripts.Enemies
                     transform.Translate(Vector2.left * Time.deltaTime * movementSpeed);
                 else
                     transform.Translate(Vector2.right * Time.deltaTime * movementSpeed);
-
-                if((shootTimer += Time.deltaTime) > shootTime)
+                if ((shootTimer += Time.deltaTime) > shootTime)
                 {
                     shots++;
-                    if(shots < numShots)
+                    if (shots < numShots)
                         shootTimer = shootTime - delay;
                     else
                     {
                         shootTimer = 0;
                         shots = 0;
                     }
-                    int x = (int)EnemyBombManager.instance.gridSize.x - 1;
-                    int y = (int)(((transform.position.x - GameManager.xBounds.x) / (GameManager.xBounds.y - GameManager.xBounds.x)) * EnemyBombManager.instance.gridSize.y);
+                    int x = (int)Util.SinusoidalRandom.Range(0f, EnemyBombManager.instance.gridSize.x);
+                    int y = (int)Util.SinusoidalRandom.Range(0f, EnemyBombManager.instance.gridSize.y);
                     EnemyBulletManager.instance.Spawn(transform.position, EnemyBombManager.instance.SpawnAt(x, y));
                 }
             }
