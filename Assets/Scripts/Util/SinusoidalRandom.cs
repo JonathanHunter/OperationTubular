@@ -26,9 +26,9 @@ namespace Assets.Scripts.Util
                 Init();
             float r = Random.Range(start, end);
             if(isDay)
-                r = (Mathf.Sin(r) % end) + start;
+                r = (Mathf.Sin(r) + start) % end;
             else
-                r = (Mathf.Cos(r) % end) + start;
+                r = (Mathf.Cos(r) + start) % end;
             return r;
         }
     }
