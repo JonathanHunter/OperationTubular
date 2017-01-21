@@ -7,6 +7,7 @@ namespace Assets.Scripts.Bullets
         public BulletPool manager;
         public int index;
         public bool enemyBullet;
+        public float damage;
 
         private float min = .1f, max = 10f;
         private Vector2 begin, end;
