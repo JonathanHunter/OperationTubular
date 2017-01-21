@@ -2,6 +2,7 @@
 using System.Collections;
 using Assets.Scripts.Player;
 using Assets.Scripts.Util;
+using Assets.Scripts.Manager;
 
 namespace Assets.Scripts.Player {
 
@@ -57,7 +58,6 @@ namespace Assets.Scripts.Player {
 			} else {
 				this.isShooting = false;
 			}
-				print("hello" + this.playerInput);
 
 			//Horizontal Movement
 			if(this.playerInput.x < 0){
@@ -140,8 +140,26 @@ namespace Assets.Scripts.Player {
 			transform.Translate(this.movement * Time.deltaTime, Space.World);
 		}
 		private void moveCrosshair(Vector2 inputValues) {
-			float trueCrossSpeed = this.getIsShooting() ? this.crosshairSlowSpeed : this.crosshairSpeed; 
-			Vector2 crosshairMove = new Vector2(inputValues.x * trueCrossSpeed, -1 * inputValues.y * trueCrossSpeed);
+			Vector2 xBounds = GameManager.xBounds;
+			Vector2 yBounds = GameManager.yBounds;
+
+			Vector2 trueCrossSpeed = this.getIsShooting() ? 
+										new Vector2(this.crosshairSlowSpeed, this.crosshairSlowSpeed) : 
+										new Vector2(this.crosshairSpeed, this.crosshairSpeed);
+			
+			if(inputValues.x < 0 && myCrosshair.transform.position.x < xBounds.x) {
+				trueCrossSpeed.x = 0;
+			} else if(inputValues.x > 0 && myCrosshair.transform.position.x > xBounds.y) {
+				trueCrossSpeed.x = 0;
+			}
+
+			if(inputValues.y < 0 && myCrosshair.transform.position.y > yBounds.x) {
+				trueCrossSpeed.y = 0;
+			} else if(inputValues.y > 0 && myCrosshair.transform.position.y < yBounds.y) {
+				trueCrossSpeed.y = 0;
+			}
+
+			Vector2 crosshairMove = new Vector2(inputValues.x * trueCrossSpeed.x, -1 * inputValues.y * trueCrossSpeed.y);
 			myCrosshair.transform.Translate(crosshairMove * Time.deltaTime, Space.World);
 		}
 
