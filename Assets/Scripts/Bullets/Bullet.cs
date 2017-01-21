@@ -16,11 +16,25 @@ namespace Assets.Scripts.Bullets
         private Vector2 begin, end;
         private float dist;
         private bool doOnce;
+        private Transform target;
 
         public void Init(Vector2 position)
         {
             begin = gameObject.transform.position;
             end = position;
+            if (enemyBullet)
+                gameObject.transform.localScale = new Vector3(min, min, 1);
+            else
+                gameObject.transform.localScale = new Vector3(max, max, 1);
+            GetComponent<Collider2D>().enabled = false;
+            doOnce = false;
+            dist = 0;
+        }
+
+        public void Init(Transform position)
+        {
+            begin = gameObject.transform.position;
+            target = position;
             if (enemyBullet)
                 gameObject.transform.localScale = new Vector3(min, min, 1);
             else
@@ -40,7 +54,12 @@ namespace Assets.Scripts.Bullets
             if (dist < 1)
             {
                 dist += Time.deltaTime * speed;
-                gameObject.transform.position = Vector2.Lerp(begin, end, dist);
+                Vector2 l;
+                if(target == null)
+                    l = Vector2.Lerp(begin, end, dist);
+                else
+                    l = Vector2.Lerp(begin, target.position, dist);
+                gameObject.transform.position = new Vector3(l.x, l.y, transform.position.z);
                 transform.localRotation = Quaternion.Euler(new Vector3(0, 0, dist * 360f * spinDir));
                 if (enemyBullet)
                     gameObject.transform.localScale =

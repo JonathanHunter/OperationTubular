@@ -370,7 +370,7 @@ namespace Assets.Scripts.Player
         public void PlayOnBeat()
         {
             if (isShooting)
-                bullets.Spawn(transform.position, myCrosshair.transform.position);
+                bullets.SpawnFollow(new Vector3(transform.position.x, transform.position.y, 1), myCrosshair.transform);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
