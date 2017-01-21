@@ -9,10 +9,11 @@ namespace Assets.Scripts.Player {
 		public float maxSpeed = 5;
 
 		public float rotationSpeed = 180;
-		private float maxRotation = 20;
+		public float maxRotation = 15;
 
 		private bool isJumping = false;
 		private bool isOnSurface = false;
+		private bool isPlayerMoving = false;
 
 		// Use this for initialization
 		void Start () {
@@ -22,15 +23,29 @@ namespace Assets.Scripts.Player {
 		// Update is called once per frame
 		void Update () {
 			if(this.getLeftPressed()){
+				this.isPlayerMoving = true;
 				this.moveHorizontal(-1f);
 				this.lean(-1f);
 			} else if(this.getRightPressed()) {
+				this.isPlayerMoving = true;
 				this.moveHorizontal(1f);
 				this.lean(1f);
+			} else {
+				this.isPlayerMoving = false;
 			}
 
 			if(this.getJumpPressed() && !this.getIsJumping()){
 				this.actionJump();
+			}
+
+			if(this.getShouldBob()) {
+				float percentInRotation = this.getRelativeRotation() / this.maxRotation;
+
+				float leanCurve = (Mathf.PingPong(Time.time, 2f) - 1f);
+				float leanOffset = percentInRotation;
+				float leanValue = leanCurve - leanOffset;
+
+				this.lean(leanValue);
 			}
 		}
 
@@ -43,6 +58,7 @@ namespace Assets.Scripts.Player {
 			//todo
 		}
 
+		//TODO update this to use getRelativeRotation()
 		private void lean(float magnitude) {
 			float currRot = transform.localEulerAngles.z;
 			//moving left: rotate positive
@@ -71,6 +87,21 @@ namespace Assets.Scripts.Player {
 
 		public bool getIsOnSurface() {
 			return this.isOnSurface;
+		}
+
+		public bool getShouldBob() {
+			return !this.isJumping && !this.isPlayerMoving;
+		}
+
+		//returns rotation assuming 0 is straight and left is negative and right is positive
+		public float getRelativeRotation() {
+			float currRot = transform.localEulerAngles.z;
+			if(currRot > 180) {//leaning right
+				return Mathf.Abs(360 - currRot);
+			} else if (currRot < 180) {//leaning left
+				return -Mathf.Abs(currRot);
+			}
+			return 0;
 		}
 
 		//placeholder for input manager telling me what to do
