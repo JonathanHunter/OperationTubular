@@ -49,7 +49,7 @@ namespace Assets.Scripts.Enemies
                 {
                     health -= damage;
                     hit = false;
-                    if (health < 0)
+                    if (health <= 0)
                         dead = true;
                 }
                 if (dead)
