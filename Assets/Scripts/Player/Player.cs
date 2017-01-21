@@ -197,6 +197,14 @@ namespace Assets.Scripts.Player
         }
 
         // Handlers
+        private void handlePlayerDidCollide(Collider2D collider) {
+    		Vector3 myPos = transform.position;
+        	Vector3 theirPos = collider.transform.position;
+        	Vector2 halfSize = new Vector2(PlayerUtil.playerSize.x/2, PlayerUtil.playerSize.y/2);
+        	
+        	Vector3 direction = PlayerUtil.getCollisionDirection(myPos, theirPos);
+        	print(direction);
+        }
         private void handlePlayerAnimation() {
             Vector2 pos = myCrosshair.transform.position;
             Vector2 target = new Vector2(transform.position.x, 1f);//horizontal divider, vertical divider
@@ -437,7 +445,7 @@ namespace Assets.Scripts.Player
             }
             if (collision.gameObject.tag == "Player")
             {
-                // this.handlePlayerCollide(collision);
+                this.handlePlayerDidCollide(collision);
             }
         }
 
