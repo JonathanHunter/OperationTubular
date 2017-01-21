@@ -266,6 +266,7 @@ GameObject:
   - 4: {fileID: 567909594}
   - 212: {fileID: 567909593}
   - 114: {fileID: 567909592}
+  - 114: {fileID: 567909595}
   m_Layer: 0
   m_Name: New Sprite
   m_TagString: Untagged
@@ -288,7 +289,6 @@ MonoBehaviour:
   decceleration: 12
   maxSpeed: 5
   jumpSpeed: 10
-  jumpTime: 2
   rotationSpeed: 180
   maxRotation: 15
   useAcceleration: 1
@@ -339,6 +339,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+--- !u!114 &567909595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 567909591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b19ba532f2d24a845b538c51ea334c7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aPressed1: 0
+  startPressed1: 0
+  rtPressed1: 0
+  ltPressed1: 0
+  lStickX1: 0
+  lStickY1: 0
+  rStickX1: 0
+  rStickY1: 0
+  aPressed2: 0
+  startPressed2: 0
+  rtPressed2: 0
+  ltPressed2: 0
+  lStickX2: 0
+  lStickY2: 0
+  rStickX2: 0
+  rStickY2: 0
 --- !u!1 &1524580015
 GameObject:
   m_ObjectHideFlags: 0

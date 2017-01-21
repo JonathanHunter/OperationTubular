@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Scripts.Player;
+using Assets.Scripts.Util;
 
 namespace Assets.Scripts.Player {
 
@@ -33,14 +34,15 @@ namespace Assets.Scripts.Player {
 		// Update is called once per frame
 		void Update () {
 			//Horizontal Movement
-			if(this.getLeftPressed()){
+			Vector2 inputValues = new Vector2(InputManager.instance.lStickX1, InputManager.instance.lStickY1);
+			if(inputValues.x < 0){
 				this.isPlayerMoving = true;
-				this.handlePlayerMove(-1f);
-				this.lean(-1f);
-			} else if(this.getRightPressed()) {
+				this.handlePlayerMove(inputValues.x);
+				this.lean(inputValues.x);
+			} else if(inputValues.x > 0) {
 				this.isPlayerMoving = true;
-				this.handlePlayerMove(1f);
-				this.lean(1f);
+				this.handlePlayerMove(inputValues.x);
+				this.lean(inputValues.x);
 			} else {
 				if(this.useAcceleration){
 					if(Mathf.Abs(this.movement.x) < 0.5f) {
@@ -166,23 +168,9 @@ namespace Assets.Scripts.Player {
 			return this.shouldBob && !this.getAirborne() && !this.isPlayerMoving;
 		}
 
-		//placeholder for input manager telling me what to do
-		public bool getLeftPressed() {
-			if(Input.GetKey(KeyCode.A)) {
-				return true;
-			}
-			return false;
-		}
-
-		public bool getRightPressed() {
-			if(Input.GetKey(KeyCode.D)) {
-				return true;
-			}
-			return false;
-		}
-
 		public bool getJumpPressed() {
-			if(Input.GetKey(KeyCode.W)) {
+			//for some reason down is negative
+			if(InputManager.instance.lStickY1 < 0) {
 				return true;
 			}
 			return false;
