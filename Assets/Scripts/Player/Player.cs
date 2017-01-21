@@ -41,9 +41,12 @@ namespace Assets.Scripts.Player
 
         private bool hit;
         private float damage;
+        private int state;
 
         public GameObject myCrosshair;
         public Bullets.BulletPool bullets;
+        public Animator anim;
+
 
         // Use this for initialization
         void Start()
@@ -53,6 +56,12 @@ namespace Assets.Scripts.Player
                 FindObjectOfType<TempoManager>().Init();
             TempoManager.instance.objects.Add(this);
             health = maxHealth;
+            state = Animator.StringToHash("State");
+        }
+
+        private bool nearZero(float i, float n)
+        {
+            return -n <= i && i <= n;
         }
 
         // Update is called once per frame
@@ -63,13 +72,26 @@ namespace Assets.Scripts.Player
                 health -= damage;
                 damage = 0;
                 hit = false;
-                if (health < 0)
+                if (health <= 0)
                     Die();
             }
 
             this.playerInput = PlayerUtil.getLeftJoystick(playerNum);
             this.crosshairInput = PlayerUtil.getRightJoystick(playerNum);
             this.triggerInput = PlayerUtil.getControllerTriggers(playerNum);
+            Vector2 pos = myCrosshair.transform.position;
+            if (nearZero(pos.x, 1) && nearZero(pos.y, 1) || nearZero(pos.x, 1) && pos.y < -1)
+                anim.SetInteger(state, 0);
+            else if (pos.x < -1 && pos.y < -1)
+                anim.SetInteger(state, 1);
+            else if (pos.x < -1 && pos.y > 1)
+                anim.SetInteger(state, 2);
+            else if (nearZero(pos.x, 1) && pos.y > 0)
+                anim.SetInteger(state, 3);
+            else if (pos.x > 1 && pos.y > 1)
+                anim.SetInteger(state, 4);
+            else if (pos.x > 1 && pos.y < -1)
+                anim.SetInteger(state, 5);
 
             //Crosshair movement
             if (this.crosshairInput.x != 0 || this.crosshairInput.y != 0)
