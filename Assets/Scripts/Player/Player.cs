@@ -8,9 +8,8 @@ namespace Assets.Scripts.Player {
 
 		public float acceleration = 0.5f;
 		public float decceleration = 8f;
-		public float defaultSpeed = 3f; //if you don't use acceleration
 		public float maxSpeed = 5f;
-		private float speed = 0;
+		private Vector2 movement = new Vector2(0, 0);
 
 		public float rotationSpeed = 180;
 		public float maxRotation = 15;
@@ -39,30 +38,32 @@ namespace Assets.Scripts.Player {
 				this.lean(1f);
 			} else {
 				if(this.useAcceleration){
-					if(Mathf.Abs(this.speed) < 0.8f) {
-						this.speed = 0f;
+					if(Mathf.Abs(this.movement.x) < 0.5f) {
+						this.movement.x = 0f;
 					}
 
-					if(Mathf.Abs(this.speed) > 0){
-						var deceVal = (this.speed < 0 ? this.decceleration : -this.decceleration) * Time.deltaTime;
-						this.speed += deceVal;
+					if(Mathf.Abs(this.movement.x) > 0){
+						var deceVal = (this.movement.x < 0 ? this.decceleration : -this.decceleration) * Time.deltaTime;
+						this.movement.x += deceVal;
 					}
-					
+				} else {
+					this.movement = new Vector2(0, 0);
 				}
 				this.isPlayerMoving = false;
 			}
 
 			//we're constantly moving the character
-			this.moveHorizontal();
+			this.handleMovement();
 
-			if(this.getJumpPressed() && !this.getIsJumping()){
-				this.actionJump();
+			if(this.getJumpPressed() && !this.getAirborne()){
+				this.handleJump();
 			}
 
 			if(this.getShouldBob()) {
-				float percentInRotation = PlayerUtil.getRelativeRotation(transform.localEulerAngles.z) / this.maxRotation;
+				// TODO properly loop animation
+				float percentInRotation = PlayerUtil.getPercentInRotation(transform.localEulerAngles.z, this.maxRotation);
 
-				float leanCurve = (Mathf.PingPong(Time.time, 2f) - 1f);
+				float leanCurve = Mathf.PingPong(Time.time, 2f) - 1f;
 				float leanOffset = percentInRotation;
 				float leanValue = leanCurve - leanOffset;
 
@@ -73,30 +74,31 @@ namespace Assets.Scripts.Player {
 		// Handlers
 		private void handlePlayerMove(float magnitude) {
 			if(this.useAcceleration) {
-				this.speed = this.speed + this.acceleration * magnitude;
+				this.movement.x = this.movement.x + this.acceleration * magnitude;
 			} else {
-				this.speed = defaultSpeed * magnitude;
+				this.movement.x = this.maxSpeed * magnitude;
 			}
-			if(this.speed > this.maxSpeed) {
-				this.speed = this.maxSpeed * magnitude;
+			if(this.movement.x > this.maxSpeed) {
+				this.movement.x = this.maxSpeed * magnitude;
 			}
-			this.moveHorizontal();
 		}
 		// Actions
-		private void moveHorizontal() {
-			if(this.speed > this.maxSpeed) {
-				this.speed = this.maxSpeed;
-			} else if(this.speed < -this.maxSpeed) {
-				this.speed = -this.maxSpeed;
+		private void handleMovement() {
+			if(this.movement.x > this.maxSpeed) {
+				this.movement.x = this.maxSpeed;
+			} else if(this.movement.x < -this.maxSpeed) {
+				this.movement.x = -this.maxSpeed;
 			}
-			// print(this.speed);
-			if(this.speed != 0){
-				transform.Translate(Vector3.right * this.speed * Time.deltaTime, Space.World);
+
+			if(this.movement.x != 0){
+				transform.Translate(this.movement * Time.deltaTime, Space.World);
 			}
 		}
 
-		private void actionJump() {
-			//todo
+		private void handleJump() {
+			if(!this.getAirborne()) {
+
+			}
 		}
 
 		//TODO update this to use getRelativeRotation()
@@ -119,7 +121,7 @@ namespace Assets.Scripts.Player {
 		}
 
 		//getters
-		public bool getIsJumping() {
+		public bool getAirborne() {
 			return this.isJumping;
 		}
 
@@ -128,7 +130,7 @@ namespace Assets.Scripts.Player {
 		}
 
 		public bool getShouldBob() {
-			return this.shouldBob && !this.getIsJumping() && !this.isPlayerMoving;
+			return this.shouldBob && !this.getAirborne() && !this.isPlayerMoving;
 		}
 
 		//placeholder for input manager telling me what to do
