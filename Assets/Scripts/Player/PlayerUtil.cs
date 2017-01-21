@@ -9,6 +9,8 @@ namespace Assets.Scripts.Player {
 		public static Vector3 defaultPlayerSpawn = new Vector3(-8, surfacePos, -1);
 		public static Vector3 defaultCrosshairSpawn = new Vector3(1, 4, -1);
 
+		public static Vector2 playerSize = new Vector2(2f, 3.2f); //collider - total width, total height
+
 		/*
 			@param player (int) - player num
 			@return Vector2 - the values of the left joystick

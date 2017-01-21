@@ -435,6 +435,10 @@ namespace Assets.Scripts.Player
                 hit = true;
                 damage = 1000000;
             }
+            if (collision.gameObject.tag == "Player")
+            {
+                // this.handlePlayerCollide(collision);
+            }
         }
 
         private void Die()
