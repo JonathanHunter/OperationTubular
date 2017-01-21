@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Assets.Scripts.Player;
 using Assets.Scripts.Util;
 using Assets.Scripts.Manager;
 
@@ -9,6 +7,8 @@ namespace Assets.Scripts.Player
 
     public class Player : MonoBehaviour, Util.PlaysOnBeat
     {
+        private static int shooting;
+
         public float maxHealth;
 
         protected float health;
@@ -56,6 +56,7 @@ namespace Assets.Scripts.Player
         // Use this for initialization
         void Start()
         {
+            shooting = 0;
             transform.position = new Vector3(PlayerUtil.defaultPlayerSpawn.x + 4 * playerNum, 
             								 PlayerUtil.defaultPlayerSpawn.y,
             								 PlayerUtil.defaultPlayerSpawn.z);
@@ -86,6 +87,7 @@ namespace Assets.Scripts.Player
                 {
                     health -= damage;
                     invulerability = invulerabilityTime;
+                    SFXManager.instance.Spawn("PlayerGetHit");
                 }
                 hit = false;
                 damage = 0;
@@ -407,7 +409,18 @@ namespace Assets.Scripts.Player
         public void PlayOnBeat()
         {
             if (isShooting)
+            {
+                if (shooting == 0)
+                    shooting = playerNum;
+                if (shooting == playerNum)
+                    SFXManager.instance.Spawn("Shoot");
                 bullets.SpawnFollow(new Vector3(transform.position.x, transform.position.y, 1), myCrosshair.transform);
+            }
+            else
+            {
+                if (shooting == playerNum)
+                    shooting = 0;
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
