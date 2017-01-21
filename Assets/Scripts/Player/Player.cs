@@ -7,6 +7,7 @@ namespace Assets.Scripts.Player
 
     public class Player : MonoBehaviour, Util.PlaysOnBeat
     {
+        public Animator muzzlefire;
         public int playerNum; //set this yo
         private Vector2 playerInput = new Vector2(0, 0);
         private Vector2 crosshairInput = new Vector2(0, 0);
@@ -438,6 +439,7 @@ namespace Assets.Scripts.Player
                 if (shooting == playerNum)
                     SFXManager.instance.Spawn("Shoot");
                 bullets.SpawnFollow(new Vector3(transform.position.x, transform.position.y, 1), myCrosshair.transform);
+                muzzlefire.SetTrigger("Shoot");
             }
             else
             {
