@@ -24,6 +24,7 @@ GameObject:
   - 114: {fileID: 114000014005169802}
   - 114: {fileID: 114000011560110802}
   - 114: {fileID: 114000010398774908}
+  - 114: {fileID: 114000010656477716}
   m_Layer: 0
   m_Name: Game Core
   m_TagString: Untagged
@@ -85,6 +86,19 @@ MonoBehaviour:
   bpm: 120
   beat: 0
   timer: 0
+--- !u!114 &114000010656477716
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013756744148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ab678e8f951adc499d6f40265c07e42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 114000010436778356, guid: 5a433c4b5df68704f9a31b64cd80e1d2, type: 2}
+  length: 100
 --- !u!114 &114000011560110802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -100,6 +114,7 @@ MonoBehaviour:
   difficultyTime: 10
   waves:
   - {fileID: 114000011862975398, guid: 98f25366979c76543a3c8d343efb3f17, type: 2}
+  - {fileID: 114000011862975398, guid: 6241e7ce420bd0443b5d74d5ddd50a71, type: 2}
 --- !u!114 &114000012439462452
 MonoBehaviour:
   m_ObjectHideFlags: 1

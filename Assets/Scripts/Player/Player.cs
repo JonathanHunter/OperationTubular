@@ -33,6 +33,7 @@ namespace Assets.Scripts.Player
 
         public float horizontalPlayerBumper = 8f;//collide with other player
         public Vector2 verticalPlayerBumper = new Vector2(6f, 8f);
+        public float gotHitBump = 15f;
 
         public bool useAcceleration = true;//should the player slide when moving
         public bool shouldBob = false;//should the player bob in the water
@@ -200,6 +201,8 @@ namespace Assets.Scripts.Player
                     health -= damage;
                     invulerability = invulerabilityTime;
                     SFXManager.instance.Spawn("PlayerGetHit");
+
+                    this.movement.y += this.gotHitBump;
                 }
                 hit = false;
                 damage = 0;
