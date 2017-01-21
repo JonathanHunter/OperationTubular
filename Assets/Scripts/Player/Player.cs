@@ -81,32 +81,8 @@ namespace Assets.Scripts.Player
         // Update is called once per frame
         void Update()
         {
-            if (hit)
-            {
-                if (invulerability <= 0)
-                {
-                    health -= damage;
-                    invulerability = invulerabilityTime;
-                    SFXManager.instance.Spawn("PlayerGetHit");
-                }
-                hit = false;
-                damage = 0;
-            }
-            if (invulerability > 0)
-            {
-                render = !render;
-                Render(render);
-                invulerability -= Time.deltaTime;
-            }
-            else if (!render)
-            {
-                render = true;
-                Render(true);
-            }
-            if (health <= 0)
-            {
-                Die();
-            }
+            //Always check Life/Death first
+            this.handleHealth();
 
             this.playerInput = PlayerUtil.getLeftJoystick(playerNum);
             this.crosshairInput = PlayerUtil.getRightJoystick(playerNum);
@@ -200,11 +176,41 @@ namespace Assets.Scripts.Player
         private void handlePlayerDidCollide(Collider2D collider) {
     		Vector3 myPos = transform.position;
         	Vector3 theirPos = collider.transform.position;
-        	Vector2 halfSize = new Vector2(PlayerUtil.playerSize.x/2, PlayerUtil.playerSize.y/2);
+        	// Vector2 halfSize = new Vector2(PlayerUtil.playerSize.x/2, PlayerUtil.playerSize.y/2);
         	
         	Vector3 direction = PlayerUtil.getCollisionDirection(myPos, theirPos);
         	print(direction);
         }
+
+        private void handleHealth() {
+			if (hit)
+            {
+                if (invulerability <= 0)
+                {
+                    health -= damage;
+                    invulerability = invulerabilityTime;
+                    SFXManager.instance.Spawn("PlayerGetHit");
+                }
+                hit = false;
+                damage = 0;
+            }
+            if (invulerability > 0)
+            {
+                render = !render;
+                Render(render);
+                invulerability -= Time.deltaTime;
+            }
+            else if (!render)
+            {
+                render = true;
+                Render(true);
+            }
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+
         private void handlePlayerAnimation() {
             Vector2 pos = myCrosshair.transform.position;
             Vector2 target = new Vector2(transform.position.x, 1f);//horizontal divider, vertical divider
@@ -454,6 +460,7 @@ namespace Assets.Scripts.Player
             TempoManager.instance.objects.Remove(this);
             GameManager.instance.Remove(this.gameObject);
             Destroy(this.gameObject);
+            Destroy(this.myCrosshair);
         }
     }
 
