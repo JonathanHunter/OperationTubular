@@ -5,6 +5,7 @@ namespace Assets.Scripts.Enemies
 {
     class Boat : Enemy
     {
+        public Animator muzzlefire;
         public float shootTime;
         public float numShots;
         public float delay;
@@ -71,6 +72,7 @@ namespace Assets.Scripts.Enemies
                     int x = (int)Util.SinusoidalRandom.Range(0f, EnemyBombManager.instance.gridSize.x);
                     int y = (int)Util.SinusoidalRandom.Range(0f, EnemyBombManager.instance.gridSize.y);
                     EnemyBulletManager.instance.Spawn(transform.position, EnemyBombManager.instance.SpawnAt(x, y));
+                    muzzlefire.SetTrigger("Shoot");
                 }
             }
         }
