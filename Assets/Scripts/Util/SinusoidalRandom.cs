@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Util
 {
-    class SinusoidalRandom :MonoBehaviour
+    class SinusoidalRandom : MonoBehaviour
     {
         private static bool isDay;
         private static bool inited;
@@ -25,10 +25,10 @@ namespace Assets.Scripts.Util
             if (!inited)
                 Init();
             float r = Random.Range(start, end);
-            if(isDay)
-                r = (Mathf.Sin(r) + start) % end;
+            if (isDay)
+                r = Mathf.Sin(r) * (end - start) + start;
             else
-                r = (Mathf.Cos(r) + start) % end;
+                r = Mathf.Cos(r) * (end - start) + start;
             return r;
         }
     }
