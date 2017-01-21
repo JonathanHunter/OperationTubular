@@ -19,7 +19,7 @@ namespace Assets.Scripts.Player
 
         private Vector2 movement = new Vector2(0, 0);
 
-        public float crosshairSpeed = 8f;
+        public float crosshairSpeed = 12f;
         public float crosshairSlowSpeed = 4f;
 
         public float acceleration = 0.8f;
@@ -51,7 +51,15 @@ namespace Assets.Scripts.Player
         // Use this for initialization
         void Start()
         {
-            myCrosshair = GameObject.Instantiate(myCrosshair, PlayerUtil.defaultCrosshairSpawn, Quaternion.identity) as GameObject;
+            transform.position = new Vector3(PlayerUtil.defaultPlayerSpawn.x + 4 * playerNum, 
+            								 PlayerUtil.defaultPlayerSpawn.y,
+            								 PlayerUtil.defaultPlayerSpawn.z);
+            
+            Vector3 crosshairSpawn = new Vector3(transform.position.x, 
+	            								 transform.position.y + PlayerUtil.defaultCrosshairSpawn.y,
+	            								 PlayerUtil.defaultCrosshairSpawn.z);
+            myCrosshair = GameObject.Instantiate(myCrosshair, crosshairSpawn, Quaternion.identity) as GameObject;
+
             if (TempoManager.instance == null)
                 FindObjectOfType<TempoManager>().Init();
             TempoManager.instance.objects.Add(this);

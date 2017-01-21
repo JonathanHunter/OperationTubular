@@ -4,10 +4,10 @@ using Assets.Scripts.Util;
 
 namespace Assets.Scripts.Player {
 	class PlayerUtil : MonoBehaviour {
-		public static float surfacePos = -3.5f; //TODO: something smarter than this
+		public static float surfacePos = -2.5f; //TODO: something smarter than this
 
-		public static Vector2 defaultPlayerSpawn = new Vector2(0, -3.5f);
-		public static Vector2 defaultCrosshairSpawn = new Vector2(0, 1);
+		public static Vector3 defaultPlayerSpawn = new Vector3(-8, surfacePos, -1);
+		public static Vector3 defaultCrosshairSpawn = new Vector3(1, 4, -1);
 
 		/*
 			@param player (int) - player num
@@ -17,10 +17,8 @@ namespace Assets.Scripts.Player {
 			switch(player) {
 				case 1:
 					return new Vector2(InputManager.instance.lStickX1, InputManager.instance.lStickY1);
-					break;
 				case 2:
 					return new Vector2(InputManager.instance.lStickX2, InputManager.instance.lStickY2);
-					break;
 			}
 			return new Vector2(0, 0);
 		}
@@ -32,10 +30,8 @@ namespace Assets.Scripts.Player {
 			switch(player) {
 				case 1:
 					return new Vector2(InputManager.instance.rStickX1, InputManager.instance.rStickY1);
-					break;
 				case 2:
 					return new Vector2(InputManager.instance.rStickX2, InputManager.instance.rStickY2);
-					break;
 			}
 			return new Vector2(0, 0);
 		}
@@ -50,11 +46,9 @@ namespace Assets.Scripts.Player {
 				case 1:
 					return new Vector2(InputManager.instance.ltPressed1 ? 1f : 0f, 
 									   InputManager.instance.rtPressed1 ? 1f : 0f);
-					break;
 				case 2:
 					return new Vector2(InputManager.instance.ltPressed2 ? 1f : 0f, 
 									   InputManager.instance.rtPressed2 ? 1f : 0f);					
-					break;
 			}
 			return new Vector2(0, 0);
 		}
