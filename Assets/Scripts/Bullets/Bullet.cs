@@ -12,12 +12,12 @@ namespace Assets.Scripts.Bullets
         private float min = .1f, max = 10f;
         private Vector2 begin, end;
         private float dist;
-        
+
         public void Init(Vector2 position)
         {
             begin = gameObject.transform.position;
             end = position;
-            if(enemyBullet)
+            if (enemyBullet)
                 gameObject.transform.localScale = new Vector3(min, min, 1);
             else
                 gameObject.transform.localScale = new Vector3(max, max, 1);
@@ -25,15 +25,15 @@ namespace Assets.Scripts.Bullets
 
         private void Update()
         {
-            gameObject.transform.position = Vector2.Lerp(begin, end, dist);
-            if(dist < 1)
+            if (dist < 1)
             {
                 dist += Time.deltaTime;
+                gameObject.transform.position = Vector2.Lerp(begin, end, dist);
                 if (enemyBullet)
-                    gameObject.transform.localScale = 
+                    gameObject.transform.localScale =
                         new Vector3(Lerp(min, max, dist), Lerp(min, max, dist), 1);
                 else
-                    gameObject.transform.localScale = 
+                    gameObject.transform.localScale =
                         new Vector3(Lerp(max, min, dist), Lerp(max, min, dist), 1);
             }
         }

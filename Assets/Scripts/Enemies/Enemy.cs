@@ -45,7 +45,7 @@ namespace Assets.Scripts.Enemies
                         rgby2D.velocity = vel;
                     }
                 }
-                if(hit)
+                if (hit)
                 {
                     health -= damage;
                     hit = false;
@@ -98,6 +98,11 @@ namespace Assets.Scripts.Enemies
                 hit = true;
                 damage = 1000000;
             }
+        }
+
+        protected float Lerp(float min, float max, float f)
+        {
+            return min + f * (max - min);
         }
     }
 }
