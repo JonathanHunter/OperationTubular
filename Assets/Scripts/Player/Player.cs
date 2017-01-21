@@ -7,30 +7,31 @@ namespace Assets.Scripts.Player
 
     public class Player : MonoBehaviour, Util.PlaysOnBeat
     {
-        private static int shooting;
-
-        public float maxHealth;
-
-        protected float health;
         public int playerNum; //set this yo
         private Vector2 playerInput = new Vector2(0, 0);
         private Vector2 crosshairInput = new Vector2(0, 0);
         private Vector2 triggerInput = new Vector2(0, 0);
-
         private Vector2 movement = new Vector2(0, 0);
 
-        public float crosshairSpeed = 12f;
+        public float maxHealth = 10;
+        protected float health = 10;
+
+        public float crosshairSpeed = 12f;//crosshair movement
         public float crosshairSlowSpeed = 4f;
 
-        public float acceleration = 0.8f;
+        public float acceleration = 0.8f;//movement
         public float decceleration = 12f;
         public float maxSpeed = 6f;
 
-        public float jumpSpeed = 15f;
-        private float jumpStartTime = 0f;
+        public float jumpSpeed = 15f;//jumping
+        public float jumpDecceleration = 15f;
+        private float jumpStartTime = 0;
 
-        public float rotationSpeed = 180;
+        public float rotationSpeed = 180;//leaning
         public float maxRotation = 15;
+
+        public float horizontalPlayerBumper = 8f;//collide with other player
+        public Vector2 verticalPlayerBumper = new Vector2(6f, 8f);
 
         public bool useAcceleration = true;//should the player slide when moving
         public bool shouldBob = false;//should the player bob in the water
@@ -38,6 +39,7 @@ namespace Assets.Scripts.Player
         private bool isJumping = false; //is player jumping
         private bool isPlayerMoving = false; //is player asking the character to move
         private bool isShooting = false;//is player pew pewing
+        private static int shooting;
 
         private bool hit;
         private float damage;
@@ -176,10 +178,17 @@ namespace Assets.Scripts.Player
         private void handlePlayerDidCollide(Collider2D collider) {
     		Vector3 myPos = transform.position;
         	Vector3 theirPos = collider.transform.position;
-        	// Vector2 halfSize = new Vector2(PlayerUtil.playerSize.x/2, PlayerUtil.playerSize.y/2);
         	
         	Vector3 direction = PlayerUtil.getCollisionDirection(myPos, theirPos);
-        	print(direction);
+        	if(Mathf.Abs(direction.x) > 0){
+        		this.handlePlayerMove(direction.x * this.horizontalPlayerBumper);
+        		this.lean(direction.x * 0.6f);
+        	}
+        	if(direction.y < 0){
+        		this.movement.y = direction.y * this.verticalPlayerBumper.x;
+        	} else if(direction.y > 0){
+        		this.movement.y = direction.y * this.verticalPlayerBumper.y;
+        	}
         }
 
         private void handleHealth() {

@@ -117,16 +117,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6067b178203f64eae9cf1a487c49530d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
   playerNum: 2
+  maxHealth: 10
   crosshairSpeed: 12
   crosshairSlowSpeed: 4
   acceleration: 0.8
   decceleration: 12
   maxSpeed: 6
   jumpSpeed: 15
+  jumpDecceleration: 15
   rotationSpeed: 180
   maxRotation: 15
+  horizontalPlayerBumper: 8
+  verticalPlayerBumper: {x: 6, y: 8}
   useAcceleration: 1
   shouldBob: 0
   myCrosshair: {fileID: 1000010344724684, guid: 377b712df66b9482194064898d0419cb,
