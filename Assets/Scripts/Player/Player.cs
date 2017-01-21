@@ -8,7 +8,7 @@ namespace Assets.Scripts.Player {
 		public float speed = 3;
 		public float maxSpeed = 5;
 
-		public float rotationSpeed = 50;
+		public float rotationSpeed = 180;
 		private float maxRotation = 20;
 
 		private bool isJumping = false;
@@ -36,18 +36,32 @@ namespace Assets.Scripts.Player {
 
 		// Actions
 		private void moveHorizontal(float magnitude) {
-			transform.Translate(Vector3.right * magnitude * this.speed * Time.deltaTime);
+			transform.Translate(Vector3.right * magnitude * this.speed * Time.deltaTime, Space.World);
 		}
 
 		private void actionJump() {
 			//todo
 		}
 
-		//todo vector3
 		private void lean(float magnitude) {
-			Vector3 currentRotation = transform.eulerAngles;
-			float rotateAttempt = currentRotation.z + magnitude * this.rotationSpeed * Time.deltaTime;
-			transform.eulerAngles = new Vector3(currentRotation.x, currentRotation.y, rotateAttempt);
+			float currRot = transform.localEulerAngles.z;
+			//moving left: rotate positive
+			//moving right: rotate negative
+			float rotateAttempt = currRot - magnitude * this.rotationSpeed * Time.deltaTime;
+
+			float direction = Mathf.Ceil(magnitude);
+			float max360 = 360f - this.maxRotation;
+
+			// print("current: " + currRot + " max: " + maxRotation);
+
+			if(direction > 0 && (currRot < -this.maxRotation || (currRot > 180 && currRot < max360) )) {//right
+				//do not rotate
+			} else if(direction < 0 && (currRot < 180 && currRot > this.maxRotation)) {//left
+				//do not rotate
+			} else {
+				transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, rotateAttempt);
+			}
+			
 		}
 
 		//getters
