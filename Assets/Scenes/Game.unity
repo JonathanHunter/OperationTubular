@@ -1032,6 +1032,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114000011560110802, guid: e5c93032278cc402f92663e24dc36a77,
+        type: 2}
+      propertyPath: waves.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012350641124, guid: e5c93032278cc402f92663e24dc36a77, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0.34507793
@@ -1074,6 +1079,12 @@ Prefab:
       propertyPath: players.Array.data[1]
       value: 
       objectReference: {fileID: 1740940352}
+    - target: {fileID: 114000011560110802, guid: e5c93032278cc402f92663e24dc36a77,
+        type: 2}
+      propertyPath: waves.Array.data[2]
+      value: 
+      objectReference: {fileID: 114000011862975398, guid: 20ed0cf0bc4fbc842a80b61afcdf79b9,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e5c93032278cc402f92663e24dc36a77, type: 2}
   m_IsPrefabParent: 0
