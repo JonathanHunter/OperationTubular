@@ -6,8 +6,15 @@ using Assets.Scripts.Util;
 namespace Assets.Scripts.Player {
 
 	public class Player : MonoBehaviour {
-
+		public int playerNum; //set this yo
+		private Vector2 playerInput = new Vector2(0, 0);
+		private Vector2 crosshairInput = new Vector2(0, 0);
+		private Vector2 triggerInput = new Vector2(0, 0);
+		
 		private Vector2 movement = new Vector2(0, 0);
+
+		public float crosshairSpeed = 8f;
+		public float crosshairSlowSpeed = 4f;
 
 		public float acceleration = 0.8f;
 		public float decceleration = 12f;
@@ -23,26 +30,44 @@ namespace Assets.Scripts.Player {
 		public bool shouldBob = true;//should the player bob in the water
 
 		private bool isJumping = false; //is player jumping
-		// private bool isOnSurface = true; //is player on surface of water
 		private bool isPlayerMoving = false; //is player asking the character to move
+		private bool isShooting = false;//is player pew pewing
+
+		public GameObject myCrosshair;
 
 		// Use this for initialization
 		void Start () {
-		
+			myCrosshair = GameObject.Instantiate(myCrosshair, PlayerUtil.defaultCrosshairSpawn, Quaternion.identity) as GameObject;
 		}
 		
 		// Update is called once per frame
 		void Update () {
+			this.playerInput = PlayerUtil.getLeftJoystick(playerNum);
+			this.crosshairInput = PlayerUtil.getRightJoystick(playerNum);
+			this.triggerInput = PlayerUtil.getControllerTriggers(playerNum);
+
+			//Crosshair movement
+			if(this.crosshairInput.x != 0 || this.crosshairInput.y != 0) {
+				this.moveCrosshair(this.crosshairInput);
+			}
+			//Shooting
+			if(this.triggerInput.y > 0) {
+				this.isShooting = true;
+				this.actionShoot();
+			} else {
+				this.isShooting = false;
+			}
+				print("hello" + this.playerInput);
+
 			//Horizontal Movement
-			Vector2 inputValues = new Vector2(InputManager.instance.lStickX1, InputManager.instance.lStickY1);
-			if(inputValues.x < 0){
+			if(this.playerInput.x < 0){
 				this.isPlayerMoving = true;
-				this.handlePlayerMove(inputValues.x);
-				this.lean(inputValues.x);
-			} else if(inputValues.x > 0) {
+				this.handlePlayerMove(this.playerInput.x);
+				this.lean(this.playerInput.x);
+			} else if(playerInput.x > 0) {
 				this.isPlayerMoving = true;
-				this.handlePlayerMove(inputValues.x);
-				this.lean(inputValues.x);
+				this.handlePlayerMove(this.playerInput.x);
+				this.lean(this.playerInput.x);
 			} else {
 				if(this.useAcceleration){
 					if(Mathf.Abs(this.movement.x) < 0.5f) {
@@ -83,7 +108,7 @@ namespace Assets.Scripts.Player {
 			}
 
 			//constantly move the character
-			this.handleMovement();
+			this.movePlayer();
 		}
 
 		// Handlers
@@ -97,8 +122,7 @@ namespace Assets.Scripts.Player {
 				this.movement.x = this.maxSpeed * magnitude;
 			}
 		}
-		// Handlers
-		private void handleMovement() {
+		private void movePlayer() {
 			if(this.movement.x > this.maxSpeed) {
 				this.movement.x = this.maxSpeed;
 			} else if(this.movement.x < -this.maxSpeed) {
@@ -115,6 +139,11 @@ namespace Assets.Scripts.Player {
 
 			transform.Translate(this.movement * Time.deltaTime, Space.World);
 		}
+		private void moveCrosshair(Vector2 inputValues) {
+			float trueCrossSpeed = this.getIsShooting() ? this.crosshairSlowSpeed : this.crosshairSpeed; 
+			Vector2 crosshairMove = new Vector2(inputValues.x * trueCrossSpeed, -1 * inputValues.y * trueCrossSpeed);
+			myCrosshair.transform.Translate(crosshairMove * Time.deltaTime, Space.World);
+		}
 
 		private void handleJumping() {
 			float timeSinceJumping = (Time.time - this.jumpStartTime);
@@ -124,11 +153,10 @@ namespace Assets.Scripts.Player {
 			}
 		}
 
-		private void handleHitSurface() {
-
-		}
-
 		//Actions
+		private void actionShoot() {
+			//you're shooting
+		}
 
 		private void actionJump() {
 			if(!this.getAirborne()) {
@@ -162,6 +190,9 @@ namespace Assets.Scripts.Player {
 			return this.isJumping;
 		}
 
+		public bool getIsShooting() {
+			return this.isShooting;
+		}
 		public bool getIsOnSurface() {
 			if(transform.position.y <= PlayerUtil.surfacePos){
 				return true;
@@ -176,7 +207,7 @@ namespace Assets.Scripts.Player {
 		}
 
 		public bool getJumpPressed() {
-			if(InputManager.instance.aPressed1) {
+			if(this.triggerInput.x > 0){
 				return true;
 			}
 			return false;
