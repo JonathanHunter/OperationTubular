@@ -39,7 +39,7 @@ namespace Assets.Scripts.Util
         public void SetBeat(int bpm)
         {
             this.bpm = bpm;
-            beat = (60f / bpm);
+            beat = (60f / bpm)/4f;
             timer = beat;
         }
 
@@ -52,12 +52,12 @@ namespace Assets.Scripts.Util
             }
             else
             {
-                Beat();
+                Beat16();
                 timer = beat;
             }
         }
 
-        public void Beat()
+        public void Beat16()
         {
             foreach (PlaysOnBeat o in objects)
                 o.PlayOnBeat();
