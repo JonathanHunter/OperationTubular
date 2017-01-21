@@ -6,9 +6,9 @@ namespace Assets.Scripts.Player {
 
 	public class Player : MonoBehaviour {
 
-		public float acceleration = 0.5f;
-		public float decceleration = 8f;
-		public float maxSpeed = 5f;
+		public float acceleration = 0.8f;
+		public float decceleration = 12f;
+		public float maxSpeed = 6f;
 		private Vector2 movement = new Vector2(0, 0);
 
 		public float rotationSpeed = 180;
@@ -68,6 +68,10 @@ namespace Assets.Scripts.Player {
 				float leanValue = leanCurve - leanOffset;
 
 				this.lean(leanValue);
+			} else {
+				//rotate back towards center
+				float percentInRotation = PlayerUtil.getPercentInRotation(transform.localEulerAngles.z, this.maxRotation);
+				this.lean(-percentInRotation);
 			}
 		}
 
