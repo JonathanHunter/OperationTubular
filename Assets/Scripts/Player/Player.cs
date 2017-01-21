@@ -8,7 +8,11 @@ namespace Assets.Scripts.Player {
 		public float speed = 3;
 		public float maxSpeed = 5;
 
+		public float rotationSpeed = 50;
+		private float maxRotation = 20;
+
 		private bool isJumping = false;
+		private bool isOnSurface = false;
 
 		// Use this for initialization
 		void Start () {
@@ -19,11 +23,13 @@ namespace Assets.Scripts.Player {
 		void Update () {
 			if(this.getLeftPressed()){
 				this.moveHorizontal(-1f);
+				this.lean(-1f);
 			} else if(this.getRightPressed()) {
 				this.moveHorizontal(1f);
+				this.lean(1f);
 			}
 
-			if(this.getJumpPressed() && this.getIsJumping()){
+			if(this.getJumpPressed() && !this.getIsJumping()){
 				this.actionJump();
 			}
 		}
@@ -37,9 +43,20 @@ namespace Assets.Scripts.Player {
 			//todo
 		}
 
+		//todo vector3
+		private void lean(float magnitude) {
+			Vector3 currentRotation = transform.eulerAngles;
+			float rotateAttempt = currentRotation.z + magnitude * this.rotationSpeed * Time.deltaTime;
+			transform.eulerAngles = new Vector3(currentRotation.x, currentRotation.y, rotateAttempt);
+		}
+
 		//getters
 		public bool getIsJumping() {
 			return this.isJumping;
+		}
+
+		public bool getIsOnSurface() {
+			return this.isOnSurface;
 		}
 
 		//placeholder for input manager telling me what to do
