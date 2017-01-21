@@ -52,6 +52,20 @@ namespace Assets.Scripts.Bullets
 
         }
 
+        public void SpawnFollow(Vector3 startPos, Transform target)
+        {
+            if (!inited)
+                Init();
+            int index = FindAvailable();
+            if (index > -1)
+            {
+                bullets[index].gameObject.SetActive(true);
+                bullets[index].transform.position = startPos;
+                bullets[index].Init(target);
+            }
+
+        }
+
         public void Recover(int index)
         {
             bullets[index].transform.position = standbyPos;
