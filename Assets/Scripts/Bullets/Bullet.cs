@@ -2,9 +2,9 @@
 
 namespace Assets.Scripts.Bullets
 {
-    class Bullet : MonoBehaviour
+    public class Bullet : MonoBehaviour
     {
-        public GameObject manager;
+        public BulletPool manager;
         public int index;
         public bool enemyBullet;
 
