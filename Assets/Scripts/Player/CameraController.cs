@@ -12,7 +12,10 @@ public class CameraController : MonoBehaviour {
 
 	public bool useBounds = true; //should camera be constrained
 	private float windowWidth = 6;
-	public float boundsPadding = 4;
+	public Vector2 boundsPaddingX = new Vector2(-4, 4);//minimum left, maximum right
+	public Vector2 boundsPaddingY = new Vector2(0.5f, 1);//minimum down, maximum up
+
+	private float verticalOffset = 5f;
 
 	// Use this for initialization
 	void Start () {
@@ -33,19 +36,29 @@ public class CameraController : MonoBehaviour {
 			Vector3 newPos = sumTrackables / (trackableCount + 1);
 
 			if(this.useBounds) {
+				//horizontal
 				Vector2 myBoundsMax = new Vector2(
-					GameManager.xBounds.y - (this.windowWidth / 2) - this.boundsPadding,
-					GameManager.xBounds.x + (this.windowWidth / 2) + this.boundsPadding);
+					GameManager.xBounds.x - (this.windowWidth / 2) + this.boundsPaddingX.x,
+					GameManager.xBounds.y + (this.windowWidth / 2) + this.boundsPaddingX.y);
 
-				if(newPos.x > myBoundsMax.x) {
-					newPos.x = myBoundsMax.x;
-				} else if(newPos.x < myBoundsMax.y) {
+				if(newPos.x > myBoundsMax.y) {
 					newPos.x = myBoundsMax.y;
+				} else if(newPos.x < myBoundsMax.x) {
+					newPos.x = myBoundsMax.x;
 				}
-				//TODO: y bounds check
+				//vertical - inverse
+				Vector2 myBoundsMaxY = new Vector2(
+					GameManager.yBounds.x - this.verticalOffset - this.boundsPaddingY.x,
+					GameManager.yBounds.y + this.verticalOffset + this.boundsPaddingY.y);
+
+				if(newPos.y < myBoundsMaxY.x) {
+					newPos.y = myBoundsMaxY.x;
+				} else if(newPos.y > myBoundsMaxY.y) {
+					newPos.y = myBoundsMaxY.y;
+				}
 			}
 
-			newPos = new Vector3(newPos.x, defaultPos.y, defaultPos.z);
+			newPos = new Vector3(newPos.x, newPos.y, defaultPos.z);
 
 			transform.position = Vector3.Lerp(transform.position, newPos, trackingSpeed * Time.deltaTime);
 		}	

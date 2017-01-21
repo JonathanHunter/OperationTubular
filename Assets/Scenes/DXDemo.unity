@@ -618,7 +618,8 @@ MonoBehaviour:
   - {fileID: 40174376}
   trackingSpeed: 2
   useBounds: 1
-  boundsPadding: 5
+  boundsPaddingX: {x: -4, y: 4}
+  boundsPaddingY: {x: 0.5, y: 1}
 --- !u!1 &167358552
 GameObject:
   m_ObjectHideFlags: 0
@@ -1259,6 +1260,22 @@ Transform:
   - {fileID: 2089779677}
   m_Father: {fileID: 0}
   m_RootOrder: 6
+--- !u!1 &619994345 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000013324035938, guid: dd815c9cebbc02c42b1d2395f5d48df3,
+    type: 2}
+  m_PrefabInternal: {fileID: 1748475443}
+--- !u!114 &619994349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 619994345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3aa1da4e535a2c4891300c3a3a24adc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &944873615
 GameObject:
   m_ObjectHideFlags: 0

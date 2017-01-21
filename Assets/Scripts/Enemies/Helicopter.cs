@@ -69,8 +69,9 @@ namespace Assets.Scripts.Enemies
                         shootTimer = 0;
                         shots = 0;
                     }
-                    int i = (int)Util.SinusoidalRandom.Range(0, GameManager.instance.players.Length);
-                    EnemyBulletManager.instance.Spawn(this.transform.position, GameManager.instance.players[i].transform.position);
+                    int x = (int)EnemyBombManager.instance.gridSize.x - 1;
+                    int y = (int)(((transform.position.x - GameManager.xBounds.x) / (GameManager.xBounds.y - GameManager.xBounds.x)) * EnemyBombManager.instance.gridSize.y);
+                    EnemyBombManager.instance.SpawnAt(x, y);
                 }
             }
         }
