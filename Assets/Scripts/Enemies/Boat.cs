@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Assets.Scripts.Manager;
+using Assets.Scripts.Util;
 
 namespace Assets.Scripts.Enemies
 {
@@ -27,7 +28,7 @@ namespace Assets.Scripts.Enemies
 
         protected override void Init()
         {
-            gameObject.transform.localScale = new Vector3(min, min, 1);
+            gameObject.transform.localScale = new Vector3(min, min, ZLayer.EnemyZ);
             left = false;
             GetComponent<Collider2D>().enabled = false;
             dist = 0;

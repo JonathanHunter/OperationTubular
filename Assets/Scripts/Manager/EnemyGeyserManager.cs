@@ -5,18 +5,18 @@ using Assets.Scripts.Util;
 
 namespace Assets.Scripts.Manager
 {
-    class EnemyBombManager : MonoBehaviour, Util.PlaysOnBeat
+    class EnemyGeyserManager : MonoBehaviour, Util.PlaysOnBeat
     {
-        public static EnemyBombManager instance;
+        public static EnemyGeyserManager instance;
 
         public Vector2 gridSize = new Vector2(4, 12);
-        public Bomb prefab;
+        public Geyser prefab;
         public int length;
 
         private Vector2 cellSize;
 
-        private Bomb[] bombs;
-        private Bomb[,] grid;
+        private Geyser[] pool;
+        private Geyser[,] grid;
         private Vector2 standbyPos = new Vector2(-1000, 0);
         private bool inited;
 
@@ -40,18 +40,18 @@ namespace Assets.Scripts.Manager
                 Destroy(this.gameObject);
                 return;
             }
-            grid = new Bomb[(int)gridSize.x, (int)gridSize.y];
+            grid = new Geyser[(int)gridSize.x, (int)gridSize.y];
             if (Util.TempoManager.instance == null)
                 FindObjectOfType<Util.TempoManager>().Init();
             Util.TempoManager.instance.objects.Add(this);
-            bombs = new Bomb[length];
+            pool = new Geyser[length];
             for (int i = 0; i < length; i++)
             {
-                bombs[i] = Instantiate(prefab);
-                bombs[i].index = i;
-                bombs[i].manager = this;
-                bombs[i].transform.position = standbyPos;
-                bombs[i].gameObject.SetActive(false);
+                pool[i] = Instantiate(prefab);
+                pool[i].index = i;
+                pool[i].manager = this;
+                pool[i].transform.position = standbyPos;
+                pool[i].gameObject.SetActive(false);
             }
             cellSize = new Vector2((GameManager.yBounds.x - GameManager.yBounds.y) / grid.GetLength(0), (GameManager.xBounds.y - GameManager.xBounds.x) / grid.GetLength(1));
         }
@@ -63,15 +63,15 @@ namespace Assets.Scripts.Manager
             int index = FindAvailable();
             if (index > -1 && grid[r, c] == null)
             {
-                bombs[index].gameObject.SetActive(true);
-                bombs[index].transform.position = 
-                    new Vector3(c * cellSize.y - GameManager.xBounds.y, -r * cellSize.x - GameManager.yBounds.y, ZLayer.EnemyProjectileZ);
-                bombs[index].Init();
-                grid[r, c] = bombs[index];
+                pool[index].gameObject.SetActive(true);
+                pool[index].transform.position = 
+                    new Vector3(c * cellSize.y - GameManager.xBounds.y - 1f, -1f, ZLayer.EnemyProjectileZ);
+                pool[index].Init();
+                grid[r, c] = pool[index];
 
-            }
-            if (grid[r, c] != null)
-                return grid[r, c].transform.position;
+            };
+
+
             return Vector2.zero;
         }
 
@@ -89,9 +89,9 @@ namespace Assets.Scripts.Manager
 
         private int FindAvailable()
         {
-            for (int i = 0; i < bombs.Length; i++)
+            for (int i = 0; i < pool.Length; i++)
             {
-                if (bombs[i].gameObject.activeSelf == false)
+                if (pool[i].gameObject.activeSelf == false)
                 {
                     return i;
                 }
@@ -101,8 +101,8 @@ namespace Assets.Scripts.Manager
 
         public void Recover(int index)
         {
-            bombs[index].transform.position = standbyPos;
-            bombs[index].gameObject.SetActive(false);
+            pool[index].transform.position = standbyPos;
+            pool[index].gameObject.SetActive(false);
         }
     }
 }

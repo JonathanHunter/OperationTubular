@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Assets.Scripts.Util;
 
 namespace Assets.Scripts.Bullets
 {
@@ -23,9 +24,9 @@ namespace Assets.Scripts.Bullets
             begin = gameObject.transform.position;
             end = position;
             if (enemyBullet)
-                gameObject.transform.localScale = new Vector3(min, min, 1);
+                gameObject.transform.localScale = new Vector3(min, min, ZLayer.EnemyProjectileZ);
             else
-                gameObject.transform.localScale = new Vector3(max, max, 1);
+                gameObject.transform.localScale = new Vector3(max, max, ZLayer.EnemyProjectileZ);
             GetComponent<Collider2D>().enabled = false;
             doOnce = false;
             dist = 0;
@@ -36,9 +37,9 @@ namespace Assets.Scripts.Bullets
             begin = gameObject.transform.position;
             target = position;
             if (enemyBullet)
-                gameObject.transform.localScale = new Vector3(min, min, 1);
+                gameObject.transform.localScale = new Vector3(min, min, ZLayer.EnemyProjectileZ);
             else
-                gameObject.transform.localScale = new Vector3(max, max, 1);
+                gameObject.transform.localScale = new Vector3(max, max, ZLayer.EnemyProjectileZ);
             GetComponent<Collider2D>().enabled = false;
             doOnce = false;
             dist = 0;

@@ -266,7 +266,7 @@ Prefab:
     - target: {fileID: 114000011560110802, guid: e5c93032278cc402f92663e24dc36a77,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e5c93032278cc402f92663e24dc36a77, type: 2}
@@ -353,7 +353,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 128870673}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -732,7 +732,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 497159434}
-  m_RootOrder: 0
+  m_RootOrder: 2
 --- !u!1001 &469290776
 Prefab:
   m_ObjectHideFlags: 0
@@ -865,7 +865,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 497159434}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!212 &487747523
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1001,9 +1001,9 @@ Transform:
   m_LocalScale: {x: 1.39, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 399727511}
   - {fileID: 2089779677}
   - {fileID: 487747522}
+  - {fileID: 399727511}
   m_Father: {fileID: 0}
   m_RootOrder: 4
 --- !u!1001 &537320179
@@ -1390,6 +1390,25 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd815c9cebbc02c42b1d2395f5d48df3, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1921181874 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000013756744148, guid: e5c93032278cc402f92663e24dc36a77,
+    type: 2}
+  m_PrefabInternal: {fileID: 99573984}
+--- !u!114 &1921181875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1921181874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea6f25d1b3c9439393ed358465e5f69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridSize: {x: 4, y: 12}
+  prefab: {fileID: 114000013865232738, guid: e175d7f7f3d87485582fa1b2c280144c, type: 2}
+  length: 0
 --- !u!1 &2025272580
 GameObject:
   m_ObjectHideFlags: 0
@@ -1527,4 +1546,4 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 497159434}
-  m_RootOrder: 1
+  m_RootOrder: 0
