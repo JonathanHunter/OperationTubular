@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Manager
 {
@@ -39,6 +40,12 @@ namespace Assets.Scripts.Manager
                 if (g != obj)
                     objs.Add(g);
             players = objs.ToArray();
+        }
+
+        public void LoadLevel()
+        {
+            SceneManager.LoadScene("Game");
+            MusicManager.instance.ChangeMusic(MusicManager.song.level, false);
         }
     }
 }
