@@ -430,6 +430,9 @@ namespace Assets.Scripts.Player
             }
             return false;
         }
+        public Vector3 getCrosshairPos() {
+            return this.myCrosshair.transform.position;
+        }
 
         public void PlayOnBeat()
         {

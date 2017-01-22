@@ -2,12 +2,14 @@
 using System.Collections;
 using Assets.Scripts.Manager;
 using Assets.Scripts.Util;
+using Assets.Scripts.Player;
 
 public class CameraController : MonoBehaviour {
 
 	private Vector3 defaultPos = new Vector3(0, 0, ZLayer.CameraZ);
 
 	public GameObject[] trackables; //things for camera to track
+	public bool followCrosshairs = false;//if true also include a trackable's myCrosshair object
 
 	public float trackingSpeed = 2f;
 
@@ -30,9 +32,15 @@ public class CameraController : MonoBehaviour {
 
 		if(trackableCount > 0){
 			Vector3 sumTrackables = defaultPos;
-			for(int i=0; i<trackableCount; i++){
+			for(int i=0; i<this.trackables.Length; i++){
 				if(this.trackables[i] != null){
 					sumTrackables += this.trackables[i].transform.position;
+
+					if(this.followCrosshairs && this.trackables[i].tag == "Player"){
+						Player playerScript = this.trackables[i].GetComponent<Player>();
+						sumTrackables += playerScript.getCrosshairPos();
+						trackableCount += 1;
+					}
 				}
 			}
 
