@@ -96,6 +96,8 @@ namespace Assets.Scripts.Player
         // Update is called once per frame
         void Update()
         {
+            if (GameManager.IsPaused)
+                return;
             //Always check Life/Death first
             this.handleHealth();
 
