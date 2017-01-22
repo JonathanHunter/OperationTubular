@@ -9,6 +9,8 @@ namespace Assets.Scripts.Bullets
         public GameObject wave;
         public BoxCollider2D boxCol;
 
+        public bool disable = false;
+
         bool spawnWave = false, toMiddle = false, toEnd = false;
 
         private float waveTime, maxWaveTime;
@@ -76,24 +78,27 @@ namespace Assets.Scripts.Bullets
 
         public void PlayOnBeat()
         {
-            if (cooldown > 0)
+            if (!disable)
             {
-                cooldown--;
-            }
-            else if (Random.Range(0, 16) == 0)
-            {
-                spawnWave = true;
-                cooldown = cooldownMax;
-            }
-            if (spawnWave)
-            {
-                wave.SetActive(true);
-                wave.transform.position = start.position;
-                wave.transform.localScale = start.localScale;
-                spawnWave = false;
-                toMiddle = true;
-                waveTime = maxWaveTime/2f;
-                Manager.SFXManager.instance.Spawn("WaveCrash");
+                if (cooldown > 0)
+                {
+                    cooldown--;
+                }
+                else if (Random.Range(0, 16) == 0)
+                {
+                    spawnWave = true;
+                    cooldown = cooldownMax;
+                }
+                if (spawnWave)
+                {
+                    wave.SetActive(true);
+                    wave.transform.position = start.position;
+                    wave.transform.localScale = start.localScale;
+                    spawnWave = false;
+                    toMiddle = true;
+                    waveTime = maxWaveTime / 2f;
+                    Manager.SFXManager.instance.Spawn("WaveCrash");
+                }
             }
         }
 
