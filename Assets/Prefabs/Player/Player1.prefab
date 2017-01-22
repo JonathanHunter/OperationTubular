@@ -186,6 +186,7 @@ MonoBehaviour:
   muzzlefire: {fileID: 95000010603687724}
   playerNum: 1
   maxHealth: 15
+  health: 10
   crosshairSpeed: 13
   crosshairSlowSpeed: 5
   acceleration: 0.7
