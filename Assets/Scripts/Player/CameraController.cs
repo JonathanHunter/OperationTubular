@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Scripts.Manager;
+using Assets.Scripts.Util;
 
 public class CameraController : MonoBehaviour {
 
-	private Vector3 defaultPos = new Vector3(0, 0, -5);
+	private Vector3 defaultPos = new Vector3(0, 0, ZLayer.CameraZ);
 
 	public GameObject[] trackables; //things for camera to track
 

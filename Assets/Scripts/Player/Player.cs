@@ -12,7 +12,7 @@ namespace Assets.Scripts.Player
         private Vector2 playerInput = new Vector2(0, 0);
         private Vector2 crosshairInput = new Vector2(0, 0);
         private Vector2 triggerInput = new Vector2(0, 0);
-        private Vector2 movement = new Vector2(0, 0);
+        private Vector3 movement = new Vector3(0, 0, 0);
 
         public float maxHealth = 10;
         protected float health = 10;
@@ -64,11 +64,12 @@ namespace Assets.Scripts.Player
             shooting = 0;
             transform.position = new Vector3(PlayerUtil.defaultPlayerSpawn.x + 4 * playerNum, 
             								 PlayerUtil.defaultPlayerSpawn.y,
-            								 PlayerUtil.defaultPlayerSpawn.z);
+            								 ZLayer.PlayerZ);
             
             Vector3 crosshairSpawn = new Vector3(transform.position.x, 
 	            								 transform.position.y + PlayerUtil.defaultCrosshairSpawn.y,
-	            								 PlayerUtil.defaultCrosshairSpawn.z);
+	            								 ZLayer.CrosshairZ);
+
             myCrosshair = GameObject.Instantiate(myCrosshair, crosshairSpawn, Quaternion.identity) as GameObject;
 
             if (TempoManager.instance == null)
@@ -276,8 +277,8 @@ namespace Assets.Scripts.Player
             {
             	this.isJumping = false;
                 this.movement.y = this.movement.y * 0.5f;
-                Vector2 targetPos = new Vector2(transform.position.x, PlayerUtil.surfacePos);
-                transform.position = Vector2.Lerp(transform.position, targetPos, 0.1f);
+                Vector3 targetPos = new Vector3(transform.position.x, PlayerUtil.surfacePos, ZLayer.PlayerZ);
+                transform.position = Vector3.Lerp(transform.position, targetPos, ZLayer.PlayerZ);
 			}
 
             if(this.movement.y < -this.maxJumpSpeed) {
@@ -295,22 +296,22 @@ namespace Assets.Scripts.Player
 
             if (transform.position.x < xBounds.x)
             {
-                transform.position = new Vector2(xBounds.x, transform.position.y);
+                transform.position = new Vector3(xBounds.x, transform.position.y, ZLayer.PlayerZ);
                 this.movement.x *= -1;
             }
             else if (transform.position.x > xBounds.y)
             {
-                transform.position = new Vector2(xBounds.y, transform.position.y);
+                transform.position = new Vector3(xBounds.y, transform.position.y, ZLayer.PlayerZ);
                 this.movement.x *= -1;
             }
 
             if (transform.position.y > yBounds.x)
             {
-                transform.position = new Vector2(transform.position.y, yBounds.x);
+                transform.position = new Vector3(transform.position.y, yBounds.x, ZLayer.PlayerZ);
             }
             else if (transform.position.y < yBounds.y)
             {
-                transform.position = new Vector2(transform.position.y, yBounds.y);
+                transform.position = new Vector3(transform.position.y, yBounds.y, ZLayer.PlayerZ);
             }
         }
 

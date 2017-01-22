@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Assets.Scripts.Bullets;
 using System;
+using Assets.Scripts.Util;
 
 namespace Assets.Scripts.Manager
 {
@@ -64,7 +65,7 @@ namespace Assets.Scripts.Manager
             {
                 pool[index].gameObject.SetActive(true);
                 pool[index].transform.position = 
-                    new Vector3(c * cellSize.y - GameManager.xBounds.y - 1f, -1f, pool[index].transform.position.z);
+                    new Vector3(c * cellSize.y - GameManager.xBounds.y - 1f, -1f, ZLayer.EnemyProjectileZ);
                 pool[index].Init();
                 grid[r, c] = pool[index];
 

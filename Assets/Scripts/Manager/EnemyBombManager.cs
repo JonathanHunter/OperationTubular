@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Assets.Scripts.Bullets;
 using System;
+using Assets.Scripts.Util;
 
 namespace Assets.Scripts.Manager
 {
@@ -64,7 +65,7 @@ namespace Assets.Scripts.Manager
             {
                 bombs[index].gameObject.SetActive(true);
                 bombs[index].transform.position = 
-                    new Vector3(c * cellSize.y - GameManager.xBounds.y, -r * cellSize.x - GameManager.yBounds.y, bombs[index].transform.position.z);
+                    new Vector3(c * cellSize.y - GameManager.xBounds.y, -r * cellSize.x - GameManager.yBounds.y, ZLayer.EnemyProjectileZ);
                 bombs[index].Init();
                 grid[r, c] = bombs[index];
 
