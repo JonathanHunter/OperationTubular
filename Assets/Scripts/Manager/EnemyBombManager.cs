@@ -13,7 +13,7 @@ namespace Assets.Scripts.Manager
         public Bomb prefab;
         public int length;
 
-        private Vector2 cellSize;
+        public Vector2 cellSize;
 
         private Bomb[] bombs;
         private Bomb[,] grid;
@@ -27,7 +27,7 @@ namespace Assets.Scripts.Manager
 
         }
 
-        void Init()
+        public void Init()
         {
             inited = true;
             if (instance == null)

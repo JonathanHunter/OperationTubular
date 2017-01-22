@@ -58,7 +58,7 @@ namespace Assets.Scripts.Player
         private bool render;
 
         public ParticleSystem seaFoam;
-
+        public SpriteRenderer playerLegs;
 
         // Use this for initialization
         void Start()
@@ -178,10 +178,17 @@ namespace Assets.Scripts.Player
             if (getAirborne())
             {
                 seaFoam.Stop();
+                setLegDirection();
+                if (invulerability <= 0)
+                {
+                    playerLegs.enabled = true;
+                }
             }
             else if (!seaFoam.isPlaying)
             {
                 seaFoam.Play();
+                playerLegs.enabled = false;
+                
             }
         }
 
@@ -225,6 +232,11 @@ namespace Assets.Scripts.Player
             {
                 render = !render;
                 Render(render);
+                if (getAirborne())
+                {
+                    playerLegs.enabled = render;
+                }
+
                 invulerability -= Time.deltaTime;
             }
             else if (!render)
@@ -509,6 +521,18 @@ namespace Assets.Scripts.Player
             GameManager.instance.Remove(this.gameObject);
             Destroy(this.gameObject);
             Destroy(this.myCrosshair);
+        }
+
+        public void setLegDirection()
+        {
+            if(anim.GetInteger("State") < 3)
+            {
+                playerLegs.flipX = true;
+            }
+            else
+            {
+                playerLegs.flipX = false;
+            }
         }
     }
 
