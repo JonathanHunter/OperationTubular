@@ -124,7 +124,7 @@ MonoBehaviour:
   - {fileID: 114000010732511348, guid: 183ad4acd5d812544ad3587ca9e0626d, type: 2}
   - {fileID: 114000010577673506, guid: f35986508797ec048a24b9e860941676, type: 2}
   - {fileID: 114000011289226034, guid: 2e6b639c33293e14da9269cb60d8a14b, type: 2}
-  krakenSpawnTime: 7
+  krakenSpawnTime: 10
 --- !u!114 &114000012439462452
 MonoBehaviour:
   m_ObjectHideFlags: 1

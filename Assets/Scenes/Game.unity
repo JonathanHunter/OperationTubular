@@ -1449,7 +1449,7 @@ Prefab:
     - target: {fileID: 114000011560110802, guid: e5c93032278cc402f92663e24dc36a77,
         type: 2}
       propertyPath: krakenSpawnTime
-      value: 7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114000010398774908, guid: e5c93032278cc402f92663e24dc36a77,
         type: 2}

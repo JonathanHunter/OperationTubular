@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Manager
 {
@@ -12,7 +13,7 @@ namespace Assets.Scripts.Manager
         public AudioSource mainMenu, level, bossApproach, boss, victory;
         private AudioSource source, newSong;
         public enum song { mainMenu, level, bossApproach, boss, bossVictory};
-        float beat;
+        public float beat;
         bool changeSong = false, fadeOut = false, playImmediately = false;
         float fadeTimer = 0;
 
@@ -33,6 +34,7 @@ namespace Assets.Scripts.Manager
         // Use this for initialization
         void Start()
         {
+            //SceneManager.sceneLoaded += delegate { FindObjectOfType<Util.TempoManager>().objects.Add(this); };
             source = GetComponent<AudioSource>();
             if (Util.TempoManager.instance == null)
                 FindObjectOfType<Util.TempoManager>().Init();
@@ -58,7 +60,7 @@ namespace Assets.Scripts.Manager
             }
         }
 
-        public void ChangeMusic(song nextSong, bool playImmediately)
+        public void ChangeMusic(song nextSong, bool playImmediately, bool sceneChange = false)
         {
             changeSong = true;
             this.playImmediately = playImmediately;
@@ -84,6 +86,8 @@ namespace Assets.Scripts.Manager
                     newSong.loop = false;
                     break;
             }
+            PlayOnBeat();
+
         }
 
         void PlayNewSong()
