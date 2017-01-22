@@ -92,6 +92,7 @@ namespace Assets.Scripts.Enemies
             {
                 EnemyBombManager.instance.SpawnAt(3 - shots, y);
                 EnemyBombManager.instance.SpawnAt(3 - shots, y - 1);
+                EnemyGeyserManager.instance.SpawnAt(3, y);
                 shots++;
             }
         }
