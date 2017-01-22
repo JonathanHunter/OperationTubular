@@ -57,6 +57,8 @@ namespace Assets.Scripts.Player
         private float invulerability;
         private bool render;
 
+        public ParticleSystem seaFoam;
+
 
         // Use this for initialization
         void Start()
@@ -172,6 +174,14 @@ namespace Assets.Scripts.Player
             //constantly move the character
             this.movePlayer();
             this.handlePlayerAnimation();
+            if (getAirborne())
+            {
+                seaFoam.Stop();
+            }
+            else if (!seaFoam.isPlaying)
+            {
+                seaFoam.Play();
+            }
         }
 
         // Handlers
@@ -484,7 +494,7 @@ namespace Assets.Scripts.Player
             if (collision.gameObject.tag == "Shockwave")
             {
                 hit = true;
-                damage = 1000000;
+                damage = 1;
             }
             if (collision.gameObject.tag == "Player")
             {

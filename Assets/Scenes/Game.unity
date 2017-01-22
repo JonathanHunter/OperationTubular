@@ -1111,6 +1111,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 44919063}
   m_RootOrder: 9
+--- !u!198 &1288832219 stripped
+ParticleSystem:
+  m_PrefabParentObject: {fileID: 198000011835779832, guid: 50bf8e083371d47049d37a60dea469cd,
+    type: 2}
+  m_PrefabInternal: {fileID: 1693309160}
 --- !u!1001 &1328053930
 Prefab:
   m_ObjectHideFlags: 0
@@ -1269,6 +1274,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 44919063}
   m_RootOrder: 7
+--- !u!198 &1602846808 stripped
+ParticleSystem:
+  m_PrefabParentObject: {fileID: 198000013191613426, guid: 605b82759641b4728ab2776f67bb25bd,
+    type: 2}
+  m_PrefabInternal: {fileID: 1740940351}
 --- !u!1001 &1693309160
 Prefab:
   m_ObjectHideFlags: 0
@@ -1307,6 +1317,26 @@ Prefab:
     - target: {fileID: 4000010741312090, guid: 50bf8e083371d47049d37a60dea469cd, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010438343280, guid: 50bf8e083371d47049d37a60dea469cd,
+        type: 2}
+      propertyPath: seaFoam
+      value: 
+      objectReference: {fileID: 1288832219}
+    - target: {fileID: 198000011835779832, guid: 50bf8e083371d47049d37a60dea469cd,
+        type: 2}
+      propertyPath: ShapeModule.radius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000011835779832, guid: 50bf8e083371d47049d37a60dea469cd,
+        type: 2}
+      propertyPath: randomSeed
+      value: 1571284607
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000011835779832, guid: 50bf8e083371d47049d37a60dea469cd,
+        type: 2}
+      propertyPath: EmissionModule.rate.scalar
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 50bf8e083371d47049d37a60dea469cd, type: 2}
@@ -1354,6 +1384,26 @@ Prefab:
     - target: {fileID: 4000011916496198, guid: 605b82759641b4728ab2776f67bb25bd, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012733406586, guid: 605b82759641b4728ab2776f67bb25bd,
+        type: 2}
+      propertyPath: seaFoam
+      value: 
+      objectReference: {fileID: 1602846808}
+    - target: {fileID: 198000013191613426, guid: 605b82759641b4728ab2776f67bb25bd,
+        type: 2}
+      propertyPath: EmissionModule.rate.scalar
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000013191613426, guid: 605b82759641b4728ab2776f67bb25bd,
+        type: 2}
+      propertyPath: randomSeed
+      value: -1348414077
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000013191613426, guid: 605b82759641b4728ab2776f67bb25bd,
+        type: 2}
+      propertyPath: ShapeModule.radius
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 605b82759641b4728ab2776f67bb25bd, type: 2}
