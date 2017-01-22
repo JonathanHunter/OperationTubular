@@ -93,6 +93,7 @@ namespace Assets.Scripts.Bullets
                 spawnWave = false;
                 toMiddle = true;
                 waveTime = maxWaveTime/2f;
+                Manager.SFXManager.instance.Spawn("WaveCrash");
             }
         }
 
