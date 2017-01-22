@@ -60,9 +60,12 @@ namespace Assets.Scripts.Player
         public ParticleSystem seaFoam;
         public SpriteRenderer playerLegs;
 
+
         //The GFX we instantiate when jump, and how low it should be when we generate it.
         public GameObject jumpGFX;
         public float jumpGFXHeight;
+        public RectTransform healthBar;
+
 
         // Use this for initialization
         void Start()
@@ -252,6 +255,7 @@ namespace Assets.Scripts.Player
             {
                 Die();
             }
+            healthBar.localScale = new Vector3(health/maxHealth, healthBar.localScale.y, healthBar.localScale.z);
         }
 
         private void handlePlayerAnimation() {
