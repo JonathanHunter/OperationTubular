@@ -13,7 +13,7 @@ namespace Assets.Scripts.Environment
         {
             if (instance == null)
             {
-                DontDestroyOnLoad(gameObject);
+                //DontDestroyOnLoad(gameObject);
                 instance = this;
             }
             else if (this != instance)

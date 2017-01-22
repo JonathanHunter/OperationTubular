@@ -480,6 +480,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 3
   explosion: {fileID: 0}
+  isKraken: 1
+  dead: 0
   invulerabilityTime: 3
   anim: {fileID: 95000010030661026}
   tentacles:
@@ -492,7 +494,8 @@ MonoBehaviour:
   arrivalSpeed: 0.1
   swipeTime: 5
   swipeTentacle: {fileID: 1000013596245842}
-  swipeSpeed: 0.55
+  swipeSpeed: 0.6
+  isDead: 0
 --- !u!114 &114000012477143666
 MonoBehaviour:
   m_ObjectHideFlags: 1

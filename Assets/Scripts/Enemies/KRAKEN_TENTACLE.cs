@@ -26,6 +26,11 @@ namespace Assets.Scripts.Enemies
             health = maxHealth;
         }
 
+        public void playSound()
+        {
+            Manager.SFXManager.instance.Spawn("KrakenAttack");
+        }
+
         public void SmashDone()
         {
             state = State.Idle;
