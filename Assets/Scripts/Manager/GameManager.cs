@@ -62,5 +62,10 @@ namespace Assets.Scripts.Manager
         {
             SceneManager.LoadScene("Title");
         }
+
+        public void ExitGame()
+        {
+            Application.Quit();
+        }
     }
 }
