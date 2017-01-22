@@ -24,9 +24,9 @@ namespace Assets.Scripts.Bullets
             begin = gameObject.transform.position;
             end = position;
             if (enemyBullet)
-                gameObject.transform.localScale = new Vector3(min, min, ZLayer.EnemyProjectileZ);
+                gameObject.transform.localScale = new Vector3(min, min, ZLayer.PlayerProjectileZ);
             else
-                gameObject.transform.localScale = new Vector3(max, max, ZLayer.EnemyProjectileZ);
+                gameObject.transform.localScale = new Vector3(max, max, ZLayer.PlayerProjectileZ);
             GetComponent<Collider2D>().enabled = false;
             doOnce = false;
             dist = 0;
