@@ -149,6 +149,7 @@ namespace Assets.Scripts.Player
             //Vertical Movement
             if (this.getJumpPressed() && !this.getAirborne() && this.getIsOnSurface())
             {
+                SFXManager.instance.Spawn("PlayerJump");
                 this.actionJump();
             }
 
@@ -161,6 +162,7 @@ namespace Assets.Scripts.Player
                 float leanCurve = Mathf.PingPong(Time.time, 2f) - 1f;
                 float leanOffset = percentInRotation;
                 float leanValue = leanCurve - leanOffset;
+                SFXManager.instance.Spawn("PlayerLand");
 
                 this.lean(leanValue);
             }

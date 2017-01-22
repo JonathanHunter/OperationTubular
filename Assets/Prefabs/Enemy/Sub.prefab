@@ -103,9 +103,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741852c756f687c4487592a475327939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 2
+  maxHealth: 4
   explosion: {fileID: 0}
-  invulerabilityTime: 0.2
+  invulerabilityTime: 0.1
   anim: {fileID: 95000014150185086}
   min: 0.01
   max: 0.3

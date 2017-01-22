@@ -151,12 +151,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544aba9d4451feb47bed39eb5b3f4619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 16
   explosion: {fileID: 0}
-  invulerabilityTime: 0.2
+  invulerabilityTime: 0.1
   muzzlefire: {fileID: 95000013376218506}
   shootTime: 1
-  numShots: 20
+  numShots: 10
   delay: 0.1
   min: 0.01
   max: 0.3

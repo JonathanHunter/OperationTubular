@@ -151,9 +151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e60ca4eab03ace4e8203a38daf04bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 7
   explosion: {fileID: 0}
-  invulerabilityTime: 0.2
+  invulerabilityTime: 0.1
   muzzlefire: {fileID: 95000014207347786}
   shootTime: 3
   numShots: 3

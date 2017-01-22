@@ -54,11 +54,11 @@ namespace Assets.Scripts.Enemies
                 {
                     if (invulerability <= 0)
                     {
+                        SFXManager.instance.Spawn("EnemyGetHit");
                         health -= damage;
                         invulerability = invulerabilityTime;
                         if (health <= 0)
                         {
-                            SFXManager.instance.Spawn("EnemyGetHit");
                             dead = true;
                         }
                     }
