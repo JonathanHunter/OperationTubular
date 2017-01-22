@@ -28,6 +28,8 @@ namespace Assets.Scripts.Manager
         {
             if (startCredits)
             {
+                foreach (GameObject p in GameManager.instance.players)
+                    p.SetActive(false);
                 if (timer > 0)
                 {
                     timer -= Time.deltaTime;

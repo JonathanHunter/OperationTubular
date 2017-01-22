@@ -48,23 +48,28 @@ namespace Assets.Scripts.Manager
 
         public void LoadLevel()
         {
+            paused = false;
             SceneManager.LoadScene("Game");
-            MusicManager.instance.ChangeMusic(MusicManager.song.level, false);
+            MusicManager.instance.ChangeMusic(MusicManager.song.level, true);
         }
 
         public void LoadLevelSingle()
         {
+            paused = false;
             SceneManager.LoadScene("Game 1");
-            MusicManager.instance.ChangeMusic(MusicManager.song.level, false);
+            MusicManager.instance.ChangeMusic(MusicManager.song.level, true);
         }
 
         public void LoadMenu()
         {
+            paused = false;
+            MusicManager.instance.ChangeMusic(MusicManager.song.mainMenu, true);
             SceneManager.LoadScene("Menu");
         }
 
         public void LoadTitle()
         {
+            paused = false;
             SceneManager.LoadScene("Title");
         }
 

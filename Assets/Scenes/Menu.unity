@@ -268,6 +268,7 @@ GameObject:
   - 124: {fileID: 83461725}
   - 81: {fileID: 83461724}
   - 114: {fileID: 83461729}
+  - 114: {fileID: 83461730}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -354,6 +355,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4f48a92814a8ff4895a4a1a887c6aee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &83461730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 83461723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb780e0f2fd2a64eb5e286406123201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bpm: 172
+  beat: 0
+  timer: 0
 --- !u!1 &402783196
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +447,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 114000012439462452, guid: e5c93032278cc402f92663e24dc36a77,
           type: 2}
-        m_MethodName: LoadLevelSingle
+        m_MethodName: LoadLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1008,7 +1023,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 114000012439462452, guid: e5c93032278cc402f92663e24dc36a77,
           type: 2}
-        m_MethodName: LoadLevel
+        m_MethodName: LoadLevelSingle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

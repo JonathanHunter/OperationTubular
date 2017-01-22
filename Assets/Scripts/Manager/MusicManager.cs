@@ -92,12 +92,15 @@ namespace Assets.Scripts.Manager
 
         void PlayNewSong()
         {
-            source.Stop();
-            source.clip = newSong.clip;
-            source.volume = newSong.volume;
-            source.loop = newSong.loop;
-            source.Play();
-            Callback();
+            if (source != null)
+            {
+                source.Stop();
+                source.clip = newSong.clip;
+                source.volume = newSong.volume;
+                source.loop = newSong.loop;
+                source.Play();
+                Callback();
+            }
         }
 
         void Callback()
