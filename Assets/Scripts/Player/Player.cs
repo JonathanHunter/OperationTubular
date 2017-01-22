@@ -440,6 +440,28 @@ namespace Assets.Scripts.Player
                 if (shooting == playerNum)
                     SFXManager.instance.Spawn("Shoot");
                 bullets.SpawnFollow(new Vector3(transform.position.x, transform.position.y, 1), myCrosshair.transform);
+                //move muzzle fire
+                Transform muzzleObj = transform.Find("ShotBurst");
+                Vector2 pos = myCrosshair.transform.position;
+                Vector2 target = new Vector2(transform.position.x, 1f);//horizontal divider, vertical divider
+                float margin = 1f;
+                float muzzleDist = 1f;
+
+                Vector2 muzzleOffset = new Vector2(0, 0);
+                if (PlayerUtil.nearZero(pos.x - target.x, margin) && PlayerUtil.nearZero(pos.y - target.y, margin) || PlayerUtil.nearZero(pos.x - target.x, margin) && pos.y < target.y)
+                    muzzleOffset = new Vector2(0, -muzzleDist); //torso middle low
+                else if (pos.x < target.x && pos.y < target.y)
+                    muzzleOffset = new Vector2(-muzzleDist, -muzzleDist); //torso left low
+                else if (pos.x < target.x && pos.y > target.y)
+                    muzzleOffset = new Vector2(-muzzleDist, muzzleDist); //torso left high
+                else if (PlayerUtil.nearZero(pos.x - target.x, margin) && pos.y > 0)
+                    muzzleOffset = new Vector2(0, muzzleDist); //torso middle high
+                else if (pos.x > target.x && pos.y > target.y)
+                    muzzleOffset = new Vector2(muzzleDist, muzzleDist); //torso right high
+                else if (pos.x > target.x && pos.y < target.y)
+                    muzzleOffset = new Vector2(muzzleDist, -muzzleDist); //torso right low
+
+                muzzleObj.position = new Vector3(transform.position.x + muzzleOffset.x, transform.position.y + muzzleOffset.y, ZLayer.EffectsZ);
                 muzzlefire.SetTrigger("Shoot");
             }
             else

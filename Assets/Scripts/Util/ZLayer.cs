@@ -10,6 +10,7 @@ namespace Assets.Scripts.Util
 
 		public static float PlayerZ = -20;
 		public static float UnderwaterPlayerZ = -9;
+		public static float EffectsZ = -19;//muzzle fire
 
 		public static float CrosshairZ = -21;
 		public static float PlayerProjectileZ = -15;
