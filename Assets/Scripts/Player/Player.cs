@@ -15,7 +15,7 @@ namespace Assets.Scripts.Player
         private Vector3 movement = new Vector3(0, 0, 0);
 
         public float maxHealth = 10;
-        protected float health = 10;
+        public float health = 10;
 
         public float crosshairSpeed = 12f;//crosshair movement
         public float crosshairSlowSpeed = 4f;
