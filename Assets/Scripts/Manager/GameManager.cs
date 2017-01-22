@@ -7,7 +7,7 @@ namespace Assets.Scripts.Manager
     {
         private static bool paused;
 
-        public static bool IsPaused { get { return paused; } }
+        public static bool IsPaused { get { return paused; } set { paused = value; } }
 
         public static float horizontalMax = 9;
         public static float verticalMax = 5;
@@ -42,7 +42,6 @@ namespace Assets.Scripts.Manager
             players = objs.ToArray();
             if (players.Length == 0)
             {
-                Debug.Log("A");
                 GameOverManager.instance.show = true;
             }
         }
