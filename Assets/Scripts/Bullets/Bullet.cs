@@ -11,8 +11,13 @@ namespace Assets.Scripts.Bullets
         public float damage;
         public float min = .1f;
         public float max = 10f;
+
+        public bool shouldRotate = false;
         public float spinDir;
+        public float spinSped = 0.5f;
         public float speed;
+
+        public Vector2 defaultSize = new Vector2(1f, 1f);
 
         private Vector2 begin, end;
         private float dist;
@@ -22,27 +27,28 @@ namespace Assets.Scripts.Bullets
         public void Init(Vector2 position)
         {
             begin = gameObject.transform.position;
-            end = position;
+            end = new Vector2(position.x, position.y);
             if (enemyBullet)
-                gameObject.transform.localScale = new Vector3(min, min, ZLayer.PlayerProjectileZ);
+                gameObject.transform.localScale = new Vector3(this.defaultSize.x * min, this.defaultSize.y * min, 1);
             else
-                gameObject.transform.localScale = new Vector3(max, max, ZLayer.PlayerProjectileZ);
+                gameObject.transform.localScale = new Vector3(this.defaultSize.x * max, this.defaultSize.y * max, 1);
             GetComponent<Collider2D>().enabled = false;
             doOnce = false;
             dist = 0;
         }
 
-        public void Init(Transform position)
+        public void Init(Transform trans)
         {
             begin = gameObject.transform.position;
-            target = position;
+            target = trans;
             if (enemyBullet)
-                gameObject.transform.localScale = new Vector3(min, min, ZLayer.EnemyProjectileZ);
+                gameObject.transform.localScale = new Vector3(this.defaultSize.x * min, this.defaultSize.y * min, 1);
             else
-                gameObject.transform.localScale = new Vector3(max, max, ZLayer.EnemyProjectileZ);
+                gameObject.transform.localScale = new Vector3(this.defaultSize.x * max, this.defaultSize.y * max, 1);
             GetComponent<Collider2D>().enabled = false;
             doOnce = false;
             dist = 0;
+
         }
 
         private void Update()
@@ -61,13 +67,23 @@ namespace Assets.Scripts.Bullets
                 else
                     l = Vector2.Lerp(begin, target.position, dist);
                 gameObject.transform.position = new Vector3(l.x, l.y, transform.position.z);
-                transform.localRotation = Quaternion.Euler(new Vector3(0, 0, dist * 360f * spinDir));
+
+                if(this.shouldRotate){
+                    transform.localRotation = Quaternion.Euler(new Vector3(0, 0, dist * 360f * spinDir * spinSped * Time.deltaTime));
+                } else {
+                    transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                }
+
+                Vector2 resultSizeMin = new Vector2(min * this.defaultSize.x, min * this.defaultSize.y);//x min - y max
+                Vector2 resultSizeMax = new Vector2(max * this.defaultSize.x, max * this.defaultSize.y);//x min - y max
+
+                print("min " + resultSizeMin + " max " + resultSizeMax);
                 if (enemyBullet)
                     gameObject.transform.localScale =
-                        new Vector3(Util.Lerp1D.Lerp(min, max, dist), Util.Lerp1D.Lerp(min, max, dist), 1);
+                        new Vector3(Util.Lerp1D.Lerp(resultSizeMin.x, resultSizeMax.y, dist), Util.Lerp1D.Lerp(resultSizeMin.x, resultSizeMax.y, dist), 1);
                 else
                     gameObject.transform.localScale =
-                        new Vector3(Util.Lerp1D.Lerp(max, min, dist), Util.Lerp1D.Lerp(max, min, dist), 1);
+                        new Vector3(Util.Lerp1D.Lerp(resultSizeMax.x, resultSizeMin.y, dist), Util.Lerp1D.Lerp(resultSizeMax.x, resultSizeMin.y, dist), 1);
             }
             else
             {
