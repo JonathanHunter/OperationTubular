@@ -58,6 +58,10 @@ namespace Assets.Scripts.Manager
 
         public Vector2 SpawnAt(int r, int c)
         {
+            if (r >= (int)gridSize.x)
+                r = (int)gridSize.x - 1;
+            if (c >= (int)gridSize.y)
+                c = (int)gridSize.y - 1;
             if (!inited)
                 Init();
             int index = FindAvailable();

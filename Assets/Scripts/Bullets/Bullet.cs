@@ -76,8 +76,7 @@ namespace Assets.Scripts.Bullets
 
                 Vector2 resultSizeMin = new Vector2(min * this.defaultSize.x, min * this.defaultSize.y);//x min - y max
                 Vector2 resultSizeMax = new Vector2(max * this.defaultSize.x, max * this.defaultSize.y);//x min - y max
-
-                print("min " + resultSizeMin + " max " + resultSizeMax);
+                
                 if (enemyBullet)
                     gameObject.transform.localScale =
                         new Vector3(Util.Lerp1D.Lerp(resultSizeMin.x, resultSizeMax.y, dist), Util.Lerp1D.Lerp(resultSizeMin.x, resultSizeMax.y, dist), 1);

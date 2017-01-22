@@ -76,10 +76,12 @@ namespace Assets.Scripts.Enemies
 
                 if ((shootTimer += Time.deltaTime) > shootTime)
                 {
+                    if (shots >= 3)
+                        Die();
                     if (!doOnce2)
                     {
                         doOnce2 = true;
-                        y = (int)Util.SinusoidalRandom.Range(1f, EnemyBombManager.instance.gridSize.y);
+                        y = Mathf.Abs((int)Util.SinusoidalRandom.Range(1f, EnemyBombManager.instance.gridSize.y));
                         anim.SetTrigger("Sink");
                         GetComponent<Collider2D>().enabled = false;
                     }
@@ -91,10 +93,18 @@ namespace Assets.Scripts.Enemies
         {
             if (shots < 3 & y > -1)
             {
+                if (y < 1)
+                    y = 1;
+                if (y > 11)
+                    y = 11;
                 EnemyBombManager.instance.SpawnAt(3 - shots, y);
                 EnemyBombManager.instance.SpawnAt(3 - shots, y - 1);
-                EnemyGeyserManager.instance.SpawnAt(3, y);
                 shots++;
+                if(shots >= 3)
+                {
+                    EnemyGeyserManager.instance.SpawnAt(3, y);
+                    shootTimer = 0;
+                }
             }
         }
     }

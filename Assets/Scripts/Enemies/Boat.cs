@@ -70,8 +70,13 @@ namespace Assets.Scripts.Enemies
                         shootTimer = 0;
                         shots = 0;
                     }
-                    int x = (int)Util.SinusoidalRandom.Range(0f, EnemyBombManager.instance.gridSize.x);
-                    int y = (int)Util.SinusoidalRandom.Range(0f, EnemyBombManager.instance.gridSize.y);
+                    int x = Mathf.Abs((int)Util.SinusoidalRandom.Range(0f, EnemyBombManager.instance.gridSize.x));
+                    int y = Mathf.Abs((int)Util.SinusoidalRandom.Range(0f, EnemyBombManager.instance.gridSize.y));
+                    if (x > 3)
+                        x = 3;
+                    if (y > 11)
+                        y = 11;
+
                     EnemyBulletManager.instance.Spawn(transform.position, EnemyBombManager.instance.SpawnAt(x, y));
                     muzzlefire.SetTrigger("Shoot");
                 }

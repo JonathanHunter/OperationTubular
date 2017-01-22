@@ -13,6 +13,11 @@ namespace Assets.Scripts.Util
                 Init();
         }
 
+        private void Update()
+        {
+            Debug.Log((int)Range(0, 5));
+        }
+
         private static void Init()
         {
             Random.InitState(System.DateTime.Now.Millisecond);
@@ -29,7 +34,7 @@ namespace Assets.Scripts.Util
                 r = Mathf.Sin(r) * (end - start) + start;
             else
                 r = Mathf.Cos(r) * (end - start) + start;
-            return r;
+            return Mathf.Abs(r);
         }
     }
 }
