@@ -238,6 +238,8 @@ MonoBehaviour:
   invulerabilityTime: 1
   seaFoam: {fileID: 198000011835779832}
   playerLegs: {fileID: 212000012831879310}
+  jumpGFX: {fileID: 1000014271828418, guid: 5342e8e78c5793748a06d5e484f7450a, type: 2}
+  jumpGFXHeight: -1
 --- !u!114 &114000012834411780
 MonoBehaviour:
   m_ObjectHideFlags: 1
