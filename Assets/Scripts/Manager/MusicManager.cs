@@ -13,7 +13,7 @@ namespace Assets.Scripts.Manager
         private AudioSource source, newSong;
         public enum song { mainMenu, level, bossApproach, boss, bossVictory};
         float beat;
-        bool changeSong = false, fadeOut = false;
+        bool changeSong = false, fadeOut = false, playImmediately = false;
         float fadeTimer = 0;
 
         void Awake()
@@ -52,18 +52,16 @@ namespace Assets.Scripts.Manager
                 }
                 else
                 {
-                    source.Stop();
-                    source.clip = newSong.clip;
-                    source.volume = newSong.volume;
-                    source.Play();
+                    PlayNewSong();
                     fadeOut = false;
                 }
             }
         }
 
-        public void ChangeMusic(song nextSong)
+        public void ChangeMusic(song nextSong, bool playImmediately)
         {
             changeSong = true;
+            this.playImmediately = playImmediately;
             switch (nextSong) {
                 case song.mainMenu:
                     newSong = mainMenu;
@@ -83,9 +81,29 @@ namespace Assets.Scripts.Manager
             }
         }
 
+        void PlayNewSong()
+        {
+            source.Stop();
+            source.clip = newSong.clip;
+            source.volume = newSong.volume;
+            source.Play();
+            Callback();
+        }
+
+        void Callback()
+        {
+            //Do stuff here
+        }
+
         public void PlayOnBeat()
         {
-            if (changeSong)
+            if (playImmediately)
+            {
+                PlayNewSong();
+                playImmediately = false;
+                changeSong = false;
+            }
+            else if (changeSong)
             {
                 changeSong = false;
                 fadeOut = true;
