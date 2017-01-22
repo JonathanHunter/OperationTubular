@@ -494,7 +494,7 @@ MonoBehaviour:
   arrivalSpeed: 0.1
   swipeTime: 5
   swipeTentacle: {fileID: 1000013596245842}
-  swipeSpeed: 0.6
+  swipeSpeed: 0.65
   isDead: 0
 --- !u!114 &114000012477143666
 MonoBehaviour:

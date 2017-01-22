@@ -40,6 +40,11 @@ namespace Assets.Scripts.Manager
                 if (g != obj)
                     objs.Add(g);
             players = objs.ToArray();
+            if (players.Length == 0)
+            {
+                Debug.Log("A");
+                GameOverManager.instance.show = true;
+            }
         }
 
         public void LoadLevel()
@@ -56,6 +61,11 @@ namespace Assets.Scripts.Manager
         public void LoadTitle()
         {
             SceneManager.LoadScene("Title");
+        }
+
+        public void ExitGame()
+        {
+            Application.Quit();
         }
     }
 }
