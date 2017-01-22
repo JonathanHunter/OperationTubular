@@ -70,7 +70,6 @@ public class CameraController : MonoBehaviour {
 			}
 
 			newPos = new Vector3(newPos.x, newPos.y, defaultPos.z);
-
 			transform.position = Vector3.Lerp(transform.position, newPos, trackingSpeed * Time.deltaTime);
 		}	
 	}
