@@ -68,6 +68,7 @@ namespace Assets.Scripts.Manager
                 if (temp != null)
                 {
                     SFXPool[index].GetComponent<AudioSource>().clip = temp.clip;
+                    SFXPool[index].GetComponent<AudioSource>().volume = temp.volume;
                     SFXPool[index].GetComponent<AudioSource>().Play();
                 }
             }
