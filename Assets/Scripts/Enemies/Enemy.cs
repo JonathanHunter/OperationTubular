@@ -18,6 +18,10 @@ namespace Assets.Scripts.Enemies
         private float damage;
         private Vector2 vel;
 
+        public float invulerabilityTime = 1f;
+        private float invulerability;
+        private bool render;
+
         private void Start()
         {
             health = maxHealth;
@@ -48,13 +52,29 @@ namespace Assets.Scripts.Enemies
                 }
                 if (hit)
                 {
-                    health -= damage;
-                    hit = false;
-                    if (health <= 0)
+                    if (invulerability <= 0)
                     {
-                        SFXManager.instance.Spawn("EnemyGetHit");
-                        dead = true;
+                        health -= damage;
+                        invulerability = invulerabilityTime;
+                        if (health <= 0)
+                        {
+                            SFXManager.instance.Spawn("EnemyGetHit");
+                            dead = true;
+                        }
                     }
+                    hit = false;
+                    damage = 0;
+                }
+                if (invulerability > 0)
+                {
+                    render = !render;
+                    GetComponent<SpriteRenderer>().enabled = render;
+                    invulerability -= Time.deltaTime;
+                }
+                else if (!render)
+                {
+                    render = true;
+                    GetComponent<SpriteRenderer>().enabled = render;
                 }
                 if (dead)
                 {
