@@ -58,6 +58,13 @@ namespace Assets.Scripts.Player
         private bool render;
 
         public ParticleSystem seaFoam;
+        public SpriteRenderer playerLegs;
+
+
+        //The GFX we instantiate when jump, and how low it should be when we generate it.
+        public GameObject jumpGFX;
+        public float jumpGFXHeight;
+        public RectTransform healthBar;
 
 
         // Use this for initialization
@@ -178,10 +185,17 @@ namespace Assets.Scripts.Player
             if (getAirborne())
             {
                 seaFoam.Stop();
+                setLegDirection();
+                if (invulerability <= 0)
+                {
+                    playerLegs.enabled = true;
+                }
             }
             else if (!seaFoam.isPlaying)
             {
                 seaFoam.Play();
+                playerLegs.enabled = false;
+                
             }
         }
 
@@ -225,6 +239,11 @@ namespace Assets.Scripts.Player
             {
                 render = !render;
                 Render(render);
+                if (getAirborne())
+                {
+                    playerLegs.enabled = render;
+                }
+
                 invulerability -= Time.deltaTime;
             }
             else if (!render)
@@ -236,6 +255,7 @@ namespace Assets.Scripts.Player
             {
                 Die();
             }
+            healthBar.localScale = new Vector3(health/maxHealth, healthBar.localScale.y, healthBar.localScale.z);
         }
 
         private void handlePlayerAnimation() {
@@ -377,6 +397,8 @@ namespace Assets.Scripts.Player
                 this.isJumping = true;
                 this.movement.y = this.jumpSpeed;
                 this.jumpStartTime = Time.time;
+                GameObject temp = Instantiate<GameObject>(jumpGFX);
+                temp.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + jumpGFXHeight, this.transform.position.z);
             }
         }
 
@@ -509,6 +531,18 @@ namespace Assets.Scripts.Player
             GameManager.instance.Remove(this.gameObject);
             Destroy(this.gameObject);
             Destroy(this.myCrosshair);
+        }
+
+        public void setLegDirection()
+        {
+            if(anim.GetInteger("State") < 3)
+            {
+                playerLegs.flipX = true;
+            }
+            else
+            {
+                playerLegs.flipX = false;
+            }
         }
     }
 
