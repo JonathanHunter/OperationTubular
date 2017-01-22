@@ -47,5 +47,15 @@ namespace Assets.Scripts.Manager
             SceneManager.LoadScene("Game");
             MusicManager.instance.ChangeMusic(MusicManager.song.level, false);
         }
+
+        public void LoadMenu()
+        {
+            SceneManager.LoadScene("Menu");
+        }
+
+        public void LoadTitle()
+        {
+            SceneManager.LoadScene("Title");
+        }
     }
 }
