@@ -21,16 +21,16 @@ namespace Assets.Scripts.Manager
 
         private void Start()
         {
-            if (instance == null)
-            {
+            //if (instance == null)
+            //{
                 //DontDestroyOnLoad(this.gameObject);
                 instance = this;
-            }
-            else if (this != instance)
-            {
-                Destroy(this.gameObject);
-                return;
-            }
+            //}
+            //else if (this != instance)
+            //{
+            //    Destroy(this.gameObject);
+            //    return;
+            //}
         }
 
         public void Remove(GameObject obj)

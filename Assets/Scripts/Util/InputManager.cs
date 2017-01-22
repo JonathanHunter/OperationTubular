@@ -56,16 +56,16 @@ namespace Assets.Scripts.Util
 
         void Awake()
         {
-            if (instance == null)
-            {
-                DontDestroyOnLoad(this.gameObject);
+            //if (instance == null)
+            //{
+            //    DontDestroyOnLoad(this.gameObject);
                 instance = this;
-            }
-            else if (this != instance)
-            {
-                Destroy(this.gameObject);
-                return;
-            }
+            //}
+            //else if (this != instance)
+            //{
+            //    Destroy(this.gameObject);
+            //    return;
+            //}
 
         }
 
