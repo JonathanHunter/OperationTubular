@@ -13,6 +13,8 @@ namespace Assets.Scripts.Bullets
 
         private float waveTime, maxWaveTime;
 
+        private int cooldown = 0, cooldownMax = 16;
+
         // Use this for initialization
         void Start()
         {
@@ -23,7 +25,7 @@ namespace Assets.Scripts.Bullets
             maxWaveTime = Util.TempoManager.instance.beat * 4 * 4;
             waveTime = maxWaveTime / 2f;
             //Spawns a wave to test, comment out when script implemented
-            SpawnWave();
+            //SpawnWave();
         }
 
         // Update is called once per frame
@@ -31,6 +33,8 @@ namespace Assets.Scripts.Bullets
         {
             if (toMiddle)
             {
+                wave.transform.position = Vector3.Lerp(start.position, middle.position, 1 - waveTime / (maxWaveTime / 2f));
+                wave.transform.localScale = Vector3.Lerp(start.localScale, middle.localScale, 1 - waveTime / (maxWaveTime / 2f));
                 if (waveTime > 0)
                 {
                     waveTime -= Time.deltaTime;
@@ -40,11 +44,11 @@ namespace Assets.Scripts.Bullets
                     toMiddle = false;
                     toEnd = true;
                 }
-                wave.transform.position = Vector3.Lerp(start.position, middle.position, 1 - waveTime/(maxWaveTime / 2f));
-                wave.transform.localScale = Vector3.Lerp(start.localScale, middle.localScale, 1 - waveTime / (maxWaveTime / 2f));
             }
             else if (toEnd)
             {
+                wave.transform.position = Vector3.Lerp(middle.position, end.position, 1 - waveTime / (maxWaveTime / 4f));
+                wave.transform.localScale = Vector3.Lerp(middle.localScale, end.localScale, 1 - waveTime / (maxWaveTime / 4f));
                 if (waveTime > 0)
                 {
                     if (waveTime > maxWaveTime / 16f)
@@ -62,8 +66,6 @@ namespace Assets.Scripts.Bullets
                     toEnd = false;
                     wave.SetActive(false);
                 }
-                wave.transform.position = Vector3.Lerp(middle.position, end.position, 1 - waveTime / (maxWaveTime/4f));
-                wave.transform.localScale = Vector3.Lerp(middle.localScale, end.localScale, 1 - waveTime / (maxWaveTime / 4f));
             }
         }
 
@@ -74,6 +76,15 @@ namespace Assets.Scripts.Bullets
 
         public void PlayOnBeat()
         {
+            if (cooldown > 0)
+            {
+                cooldown--;
+            }
+            else if (Random.Range(0, 16) == 0)
+            {
+                spawnWave = true;
+                cooldown = cooldownMax;
+            }
             if (spawnWave)
             {
                 wave.SetActive(true);
