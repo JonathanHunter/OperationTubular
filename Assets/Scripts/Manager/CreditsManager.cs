@@ -59,6 +59,9 @@ namespace Assets.Scripts.Manager
                         case 8:
                             StartCoroutine(FadeOut(creditBlurbs[5].gameObject));
                             break;
+                        default:
+                            Scripts.Manager.GameManager.instance.LoadTitle();
+                            break;
                     }
                     count++;
                     timer = maxTimer;
