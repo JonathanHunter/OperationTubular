@@ -52,6 +52,8 @@ namespace Assets.Scripts.Player
         public Bullets.BulletPool bullets;
         public Animator anim;
 
+        public GameObject megaManBoom;
+
 
         public float invulerabilityTime = 1f;
         private float invulerability;
@@ -529,6 +531,9 @@ namespace Assets.Scripts.Player
 
         private void Die()
         {
+            megaManBoom = Instantiate(megaManBoom);
+            megaManBoom.transform.position = transform.position;
+            Destroy(megaManBoom, 5f);
             TempoManager.instance.objects.Remove(this);
             GameManager.instance.Remove(this.gameObject);
             Destroy(this.gameObject);
