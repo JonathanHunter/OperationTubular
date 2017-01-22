@@ -65,18 +65,23 @@ namespace Assets.Scripts.Manager
             switch (nextSong) {
                 case song.mainMenu:
                     newSong = mainMenu;
+                    newSong.loop = true;
                     break;
                 case song.level:
                     newSong = level;
+                    newSong.loop = true;
                     break;
                 case song.bossApproach:
                     newSong = bossApproach;
+                    newSong.loop = false;
                     break;
                 case song.boss:
                     newSong = boss;
+                    newSong.loop = true;
                     break;
                 case song.bossVictory:
                     newSong = victory;
+                    newSong.loop = false;
                     break;
             }
         }
