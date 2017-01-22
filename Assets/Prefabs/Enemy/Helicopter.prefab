@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   explosion: {fileID: 0}
+  invulerabilityTime: 0.2
   muzzlefire: {fileID: 95000014207347786}
   shootTime: 3
   numShots: 3

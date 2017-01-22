@@ -105,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 2
   explosion: {fileID: 0}
+  invulerabilityTime: 0.2
   anim: {fileID: 95000014150185086}
   min: 0.01
   max: 0.3

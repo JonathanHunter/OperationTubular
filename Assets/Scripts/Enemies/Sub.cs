@@ -90,8 +90,8 @@ namespace Assets.Scripts.Enemies
         {
             if (shots < 3 & y > -1)
             {
-                EnemyBulletManager.instance.Spawn(transform.position, EnemyBombManager.instance.SpawnAt(3 - shots, y));
-                EnemyBulletManager.instance.Spawn(transform.position, EnemyBombManager.instance.SpawnAt(3 - shots, y - 1));
+                EnemyBombManager.instance.SpawnAt(3 - shots, y);
+                EnemyBombManager.instance.SpawnAt(3 - shots, y - 1);
                 shots++;
             }
         }
