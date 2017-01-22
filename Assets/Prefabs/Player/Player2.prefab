@@ -94,7 +94,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011916496198}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &4000010773555046
 Transform:
   m_ObjectHideFlags: 1
@@ -120,8 +120,8 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000010773555046}
-  - {fileID: 4000010139482946}
   - {fileID: 4000012465056794}
+  - {fileID: 4000010139482946}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &4000012465056794
@@ -136,7 +136,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011916496198}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!50 &50000010137286034
 Rigidbody2D:
   serializedVersion: 2
@@ -251,6 +251,8 @@ MonoBehaviour:
   invulerabilityTime: 1
   seaFoam: {fileID: 198000013191613426}
   playerLegs: {fileID: 212000013198555984}
+  jumpGFX: {fileID: 1000014271828418, guid: 5342e8e78c5793748a06d5e484f7450a, type: 2}
+  jumpGFXHeight: -1
 --- !u!198 &198000013191613426
 ParticleSystem:
   m_ObjectHideFlags: 1

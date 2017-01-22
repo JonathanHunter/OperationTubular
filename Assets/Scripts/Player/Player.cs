@@ -60,7 +60,12 @@ namespace Assets.Scripts.Player
         public ParticleSystem seaFoam;
         public SpriteRenderer playerLegs;
 
+
+        //The GFX we instantiate when jump, and how low it should be when we generate it.
+        public GameObject jumpGFX;
+        public float jumpGFXHeight;
         public RectTransform healthBar;
+
 
         // Use this for initialization
         void Start()
@@ -392,6 +397,8 @@ namespace Assets.Scripts.Player
                 this.isJumping = true;
                 this.movement.y = this.jumpSpeed;
                 this.jumpStartTime = Time.time;
+                GameObject temp = Instantiate<GameObject>(jumpGFX);
+                temp.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + jumpGFXHeight, this.transform.position.z);
             }
         }
 
