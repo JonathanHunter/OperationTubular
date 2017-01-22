@@ -25,7 +25,7 @@ namespace Assets.Scripts.Bullets
             Util.TempoManager.instance.objects.Add(this);
             boxCol.enabled = false;
             maxWaveTime = Util.TempoManager.instance.beat * 4 * 4;
-            waveTime = maxWaveTime / 2f;
+            waveTime = maxWaveTime;
             //Spawns a wave to test, comment out when script implemented
             //SpawnWave();
         }
