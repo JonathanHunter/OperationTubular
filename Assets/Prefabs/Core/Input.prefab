@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012979119404}
   - 114: {fileID: 114000010971390292}
+  - 114: {fileID: 114000014248637048}
   m_Layer: 0
   m_Name: Input
   m_TagString: Untagged
@@ -67,3 +68,15 @@ MonoBehaviour:
   lStickY2: 0
   rStickX2: 0
   rStickY2: 0
+--- !u!114 &114000014248637048
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012740882542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff66ab9323abee64590c0cfc8aa57e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  players: []
