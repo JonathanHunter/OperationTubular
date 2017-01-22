@@ -13,6 +13,10 @@ namespace Assets.Scripts.Manager
         private bool introPlaying;
         private Enemies.THE_KRAKEN krakenObj;
         private bool checkLive;
+        private bool startCredits;
+        private float creditsTimer;
+
+        public float creditsDelay;
 
         private void Start()
         {
@@ -40,6 +44,16 @@ namespace Assets.Scripts.Manager
                     MusicManager.instance.ChangeMusic(MusicManager.song.bossVictory, true);
                     checkLive = false;
                     Environment.NightManager.instance.ToDay();
+                    startCredits = true;
+                    creditsTimer = creditsDelay;
+                }
+            }
+            if(startCredits)
+            {
+                if ((creditsTimer -= Time.deltaTime) <= 0)
+                {
+                    FindObjectOfType<Manager.CreditsManager>().startCredits = true;
+                    startCredits = false;
                 }
             }
         }
