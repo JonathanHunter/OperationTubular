@@ -37,16 +37,19 @@ namespace Assets.Scripts.Enviroment
             {
                 l1.enabled = false;
             }
-            if (player2.health > 0)
+            if (player2 != null)
             {
+                if (player2.health > 0)
+                {
 
-                l2.SetPosition(0, transform.position);
-                l2.SetPosition(1, player2.transform.position);
-                l2.enabled = true;
-            }
-            else
-            {
-                l2.enabled = false;
+                    l2.SetPosition(0, transform.position);
+                    l2.SetPosition(1, player2.transform.position);
+                    l2.enabled = true;
+                }
+                else
+                {
+                    l2.enabled = false;
+                }
             }
         }
     }
