@@ -7,11 +7,12 @@ namespace Assets.Scripts.Enemies
     {
         public float maxHealth;
         public GameObject explosion;
+        public bool isKraken;
 
         protected float health;
 
         private bool paused;
-        private bool dead;
+        public bool dead;
         protected bool hit;
         private float animSpeed;
         private float g;
@@ -78,8 +79,14 @@ namespace Assets.Scripts.Enemies
                 }
                 if (dead)
                 {
-                    SFXManager.instance.Spawn("EnemyDie");
+                    if(isKraken)
+                        SFXManager.instance.Spawn("KrakenDie");
+                    else
+                        SFXManager.instance.Spawn("EnemyDie");
+
                     Die();
+                    render = true;
+                    GetComponent<SpriteRenderer>().enabled = render;
                 }
                 else
                     Run();

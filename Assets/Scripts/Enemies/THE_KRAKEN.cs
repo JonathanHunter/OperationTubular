@@ -27,10 +27,16 @@ namespace Assets.Scripts.Enemies
         private bool left;
         private Vector2 gridLeft, gridRight;
 
+        public bool isDead;
+
         protected override void Die()
         {
-            Util.TempoManager.instance.objects.Remove(this);
-            Destroy(this.gameObject);
+            isDead = true;
+            health = 1;
+            damage = 0;
+            hit = false;
+            dead = false;
+            dist = 0;
         }
 
         protected override void Init()
@@ -62,76 +68,90 @@ namespace Assets.Scripts.Enemies
 
         protected override void Run()
         {
-            Debug.Log(phase);
-            if (dist >= 1 && !doOnce)
-            {
-                doOnce = true;
-                phase = 1;
-            }
-            if (dist < 1)
+            if (isDead)
             {
                 dist += Time.deltaTime * arrivalSpeed;
-                Vector2 v = Vector2.LerpUnclamped(new Vector2(0, -10), new Vector2(0, 2.39f), dist);
+                Vector2 v = Vector2.LerpUnclamped(new Vector2(0, 2.39f), new Vector2(0, -10), dist);
                 transform.position = new Vector3(v.x, v.y, transform.position.z);
+                if(dist >= 1)
+                {
+                    Util.TempoManager.instance.objects.Remove(this);
+                    Destroy(this.gameObject);
+                }
             }
             else
             {
-                if (phase == 1)
-                {
-                    if (!doOnce2)
-                    {
-                        GetComponent<Collider2D>().enabled = false;
-                        foreach (KRAKEN_TENTACLE kt in tentacles)
-                        {
-                            kt.dead = false;
-                            kt.health = kt.maxHealth;
-                            kt.gameObject.SetActive(true);
-                            kt.anim.SetInteger("state", 0);
-                        }
-                        doOnce2 = true;
-                        doOnce4 = false;
-                    }
-                }
-                if ((swipe -= Time.deltaTime) <= 0)
-                {
-                    if (!doOnce3)
-                    {
-                        left = Util.SinusoidalRandom.Range(0, 2) > 1;
-                        if (left)
-                            swipeTentacle.transform.localScale = new Vector3(1, 1, 1);
-                        else
-                            swipeTentacle.transform.localScale = new Vector3(-1, 1, 1);
-                        doSwipe = true;
-                        doOnce3 = true;
-                    }
-                    dist2 += Time.deltaTime * swipeSpeed;
-                    if (!left)
-                        swipeTentacle.transform.position = Vector2.LerpUnclamped(gridLeft, gridRight, dist2);
-                    else
-                        swipeTentacle.transform.position = Vector2.LerpUnclamped(gridRight, gridLeft, dist2);
-                    if (dist2 > 1.5 && shots > 10)
-                    {
-                        swipe = swipeTime;
-                        doSwipe = false;
-                        shots = 0;
-                        swipeTentacle.transform.position = new Vector3(-1000000, 0, 0);
-                        doOnce3 = false;
-                        dist2 = -.5f;
-                    }
 
-                }
-                if (phase == 2)
+                if (dist >= 1 && !doOnce)
                 {
-                    if (!doOnce4)
+                    doOnce = true;
+                    phase = 1;
+                }
+                if (dist < 1)
+                {
+                    dist += Time.deltaTime * arrivalSpeed;
+                    Vector2 v = Vector2.LerpUnclamped(new Vector2(0, -10), new Vector2(0, 2.39f), dist);
+                    transform.position = new Vector3(v.x, v.y, transform.position.z);
+                }
+                else
+                {
+                    if (phase == 1)
                     {
-                        foreach (KRAKEN_TENTACLE kt in tentacles)
-                            kt.dead = false;
-                        doOnce2 = false;
-                        GetComponent<Collider2D>().enabled = true;
-                        if (health < 2)
-                            anim.SetInteger("phase", 3);
+                        if (!doOnce2)
+                        {
+                            GetComponent<Collider2D>().enabled = false;
+                            foreach (KRAKEN_TENTACLE kt in tentacles)
+                            {
+                                kt.dead = false;
+                                kt.health = kt.maxHealth;
+                                kt.gameObject.SetActive(true);
+                                kt.anim.SetInteger("state", 0);
+                            }
+                            doOnce2 = true;
+                            doOnce4 = false;
+                        }
+                    }
+                    if ((swipe -= Time.deltaTime) <= 0)
+                    {
+                        if (!doOnce3)
+                        {
+                            left = Util.SinusoidalRandom.Range(0, 2) > 1;
+                            if (left)
+                                swipeTentacle.transform.localScale = new Vector3(1, 1, 1);
+                            else
+                                swipeTentacle.transform.localScale = new Vector3(-1, 1, 1);
+                            doSwipe = true;
+                            doOnce3 = true;
+                        }
+                        dist2 += Time.deltaTime * swipeSpeed;
+                        if (!left)
+                            swipeTentacle.transform.position = Vector2.LerpUnclamped(gridLeft, gridRight, dist2);
                         else
-                            anim.SetInteger("phase", 2);
+                            swipeTentacle.transform.position = Vector2.LerpUnclamped(gridRight, gridLeft, dist2);
+                        if (dist2 > 1.5 && shots > 10)
+                        {
+                            swipe = swipeTime;
+                            doSwipe = false;
+                            shots = 0;
+                            swipeTentacle.transform.position = new Vector3(-1000000, 0, 0);
+                            doOnce3 = false;
+                            dist2 = -.5f;
+                        }
+
+                    }
+                    if (phase == 2)
+                    {
+                        if (!doOnce4)
+                        {
+                            foreach (KRAKEN_TENTACLE kt in tentacles)
+                                kt.dead = false;
+                            doOnce2 = false;
+                            GetComponent<Collider2D>().enabled = true;
+                            if (health < 2)
+                                anim.SetInteger("phase", 3);
+                            else
+                                anim.SetInteger("phase", 2);
+                        }
                     }
                 }
             }
@@ -173,13 +193,16 @@ namespace Assets.Scripts.Enemies
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if(collision.tag == "Bullet")
+            if (!isDead)
             {
-                anim.SetInteger("phase", 1);
-                phase = 1;
-                damage = 1;
-                hit = true;
-                Manager.SFXManager.instance.Spawn("KrakenGetHit");
+                if (collision.tag == "Bullet")
+                {
+                    anim.SetInteger("phase", 1);
+                    phase = 1;
+                    damage = 1;
+                    hit = true;
+                    Manager.SFXManager.instance.Spawn("KrakenGetHit");
+                }
             }
         }
     }
