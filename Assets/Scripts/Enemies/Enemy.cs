@@ -12,10 +12,10 @@ namespace Assets.Scripts.Enemies
 
         private bool paused;
         private bool dead;
-        private bool hit;
+        protected bool hit;
         private float animSpeed;
         private float g;
-        private float damage;
+        protected float damage;
         private Vector2 vel;
 
         public float invulerabilityTime = 1f;
