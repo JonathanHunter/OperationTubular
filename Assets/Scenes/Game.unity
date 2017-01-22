@@ -1303,7 +1303,7 @@ Prefab:
     - target: {fileID: 114000011560110802, guid: e5c93032278cc402f92663e24dc36a77,
         type: 2}
       propertyPath: krakenSpawnTime
-      value: 50
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114000010398774908, guid: e5c93032278cc402f92663e24dc36a77,
         type: 2}
@@ -1345,6 +1345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kraken: {fileID: 114000011814978144, guid: 99bb23a94c5ee534da4811a834d13090, type: 2}
   songBeatDelay: 60
+  creditsDelay: 5
 --- !u!1 &1481190720
 GameObject:
   m_ObjectHideFlags: 0
