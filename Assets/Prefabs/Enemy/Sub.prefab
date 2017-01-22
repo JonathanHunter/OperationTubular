@@ -103,8 +103,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741852c756f687c4487592a475327939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 4
+  maxHealth: 3
   explosion: {fileID: 0}
+  isKraken: 0
+  dead: 0
   invulerabilityTime: 0.1
   anim: {fileID: 95000014150185086}
   min: 0.01

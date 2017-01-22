@@ -15,7 +15,7 @@ namespace Assets.Scripts.Bullets
 
         private float waveTime, maxWaveTime;
 
-        private int cooldown = 0, cooldownMax = 16;
+        private int cooldown = 0, cooldownMax = 20;
 
         // Use this for initialization
         void Start()
@@ -84,7 +84,7 @@ namespace Assets.Scripts.Bullets
                 {
                     cooldown--;
                 }
-                else if (Random.Range(0, 16) == 0)
+                else if (Random.Range(0, 20) == 0)
                 {
                     spawnWave = true;
                     cooldown = cooldownMax;

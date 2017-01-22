@@ -25,6 +25,8 @@ GameObject:
   - 114: {fileID: 114000011560110802}
   - 114: {fileID: 114000010398774908}
   - 114: {fileID: 114000010656477716}
+  - 114: {fileID: 114000013184543114}
+  - 114: {fileID: 114000013563509432}
   m_Layer: 0
   m_Name: Game Core
   m_TagString: Untagged
@@ -83,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cb780e0f2fd2a64eb5e286406123201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 120
+  bpm: 172
   beat: 0
   timer: 0
 --- !u!114 &114000010656477716
@@ -114,7 +116,15 @@ MonoBehaviour:
   difficultyTime: 10
   waves:
   - {fileID: 114000011862975398, guid: 98f25366979c76543a3c8d343efb3f17, type: 2}
+  - {fileID: 114000011862975398, guid: 20ed0cf0bc4fbc842a80b61afcdf79b9, type: 2}
   - {fileID: 114000011862975398, guid: 6241e7ce420bd0443b5d74d5ddd50a71, type: 2}
+  - {fileID: 114000011705811806, guid: 8e091b64b05d6f14187b8fc22848bc2d, type: 2}
+  - {fileID: 114000011463175456, guid: a1a15a69d63490141a13b14006de1be1, type: 2}
+  - {fileID: 114000013540471402, guid: 83b746d743e124b4a810efb412305faf, type: 2}
+  - {fileID: 114000010732511348, guid: 183ad4acd5d812544ad3587ca9e0626d, type: 2}
+  - {fileID: 114000010577673506, guid: f35986508797ec048a24b9e860941676, type: 2}
+  - {fileID: 114000011289226034, guid: 2e6b639c33293e14da9269cb60d8a14b, type: 2}
+  krakenSpawnTime: 10
 --- !u!114 &114000012439462452
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -129,6 +139,34 @@ MonoBehaviour:
   players:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &114000013184543114
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013756744148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea6f25d1b3c9439393ed358465e5f69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridSize: {x: 4, y: 12}
+  prefab: {fileID: 114000013865232738, guid: e175d7f7f3d87485582fa1b2c280144c, type: 2}
+  length: 4
+--- !u!114 &114000013563509432
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013756744148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc4afca852f377b4cb348b6c727292de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kraken: {fileID: 114000011814978144, guid: 99bb23a94c5ee534da4811a834d13090, type: 2}
+  songBeatDelay: 60
+  creditsDelay: 5
 --- !u!114 &114000014005169802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,3 +181,4 @@ MonoBehaviour:
   gridSize: {x: 4, y: 12}
   prefab: {fileID: 114000013800435802, guid: a8248d4e5299c6840ac6ca70c59f1bb3, type: 2}
   length: 100
+  cellSize: {x: 0, y: 0}

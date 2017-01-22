@@ -151,8 +151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544aba9d4451feb47bed39eb5b3f4619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 16
+  maxHealth: 8
   explosion: {fileID: 0}
+  isKraken: 0
+  dead: 0
   invulerabilityTime: 0.1
   muzzlefire: {fileID: 95000013376218506}
   shootTime: 1
