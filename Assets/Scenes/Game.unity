@@ -1290,6 +1290,16 @@ Prefab:
       value: 
       objectReference: {fileID: 114000011862975398, guid: 20ed0cf0bc4fbc842a80b61afcdf79b9,
         type: 2}
+    - target: {fileID: 114000011560110802, guid: e5c93032278cc402f92663e24dc36a77,
+        type: 2}
+      propertyPath: krakenSpawnTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010398774908, guid: e5c93032278cc402f92663e24dc36a77,
+        type: 2}
+      propertyPath: bpm
+      value: 172
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e5c93032278cc402f92663e24dc36a77, type: 2}
   m_IsPrefabParent: 0
@@ -1312,6 +1322,19 @@ MonoBehaviour:
   gridSize: {x: 4, y: 12}
   prefab: {fileID: 114000013865232738, guid: e175d7f7f3d87485582fa1b2c280144c, type: 2}
   length: 4
+--- !u!114 &1328053933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1328053931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc4afca852f377b4cb348b6c727292de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kraken: {fileID: 114000011814978144, guid: 99bb23a94c5ee534da4811a834d13090, type: 2}
+  songBeatDelay: 60
 --- !u!1 &1481190720
 GameObject:
   m_ObjectHideFlags: 0

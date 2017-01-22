@@ -8,6 +8,7 @@ namespace Assets.Scripts.Generation
         public float spawnTime;
         public float difficultyTime;
         public Wave[] waves;
+        public float krakenSpawnTime;
 
         public int Difficulty { get { return difficulty; } }
 
@@ -15,6 +16,7 @@ namespace Assets.Scripts.Generation
         private float difficultyTimer;
         private float spawnTimer;
         private float mySpawnTime;
+        private bool doOnce;
 
         private void Start()
         {
@@ -22,22 +24,35 @@ namespace Assets.Scripts.Generation
             difficultyTimer = 0;
             spawnTimer = 0;
             mySpawnTime = spawnTime;
+            doOnce = false;
         }
 
         private void Update()
         {
-            if ((difficultyTimer += Time.deltaTime) >= difficultyTime)
+            if (difficulty > krakenSpawnTime)
             {
-                mySpawnTime -= Mathf.Min(Mathf.Abs(spawnTime - Mathf.Sqrt(difficulty)), 0.02f);
-                difficulty++;
-                difficultyTimer = 0f;
+                if (!doOnce)
+                {
+                    Manager.KrakenManager.instance.SpawnKraken();
+                    FindObjectOfType<Bullets.WaveGenerator>().disable = true;
+                    Environment.NightManager.instance.ToNight();
+                    doOnce = true;
+                }
             }
-            if ((spawnTimer += Time.deltaTime) >= mySpawnTime)
+            else
             {
-                waves[(int)SinusoidalRandom.Range(0, Mathf.Min(difficulty, waves.Length))].Spawn();
-                spawnTimer = 0f;
+                if ((difficultyTimer += Time.deltaTime) >= difficultyTime)
+                {
+                    mySpawnTime -= Mathf.Min(Mathf.Abs(spawnTime - Mathf.Sqrt(difficulty)), 0.02f);
+                    difficulty++;
+                    difficultyTimer = 0f;
+                }
+                if ((spawnTimer += Time.deltaTime) >= mySpawnTime)
+                {
+                    waves[(int)SinusoidalRandom.Range(0, Mathf.Min(difficulty, waves.Length))].Spawn();
+                    spawnTimer = 0f;
+                }
             }
         }
-
     }
 }
