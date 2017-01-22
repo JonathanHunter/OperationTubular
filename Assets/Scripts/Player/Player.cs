@@ -200,7 +200,12 @@ namespace Assets.Scripts.Player
                     invulerability = invulerabilityTime;
                     SFXManager.instance.Spawn("PlayerGetHit");
 
-                    this.movement.y += this.gotHitBump;
+                    if(this.getAirborne()){
+                        this.movement.y += this.gotHitBump * 0.25f;
+                    } else {
+                        this.movement.y += this.gotHitBump;
+                    }
+
                 }
                 hit = false;
                 damage = 0;
