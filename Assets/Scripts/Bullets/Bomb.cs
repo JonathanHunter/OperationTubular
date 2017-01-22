@@ -17,6 +17,11 @@ namespace Assets.Scripts.Bullets
             Manager.SFXManager.instance.Spawn("KrakenAttack");
         }
 
+        public void ActivateCollider()
+        {
+            GetComponent<Collider2D>().enabled = true;
+        }
+
         public void Init()
         {
             countDown = 3;
@@ -30,7 +35,6 @@ namespace Assets.Scripts.Bullets
             anim.SetInteger("Count", countDown);
             if (countDown == 0)
             {
-                GetComponent<Collider2D>().enabled = true;
                 return true;
             }
             return false;
