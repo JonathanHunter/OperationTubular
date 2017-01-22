@@ -35,7 +35,7 @@ namespace Assets.Scripts.Util
             {
                 aPressed2 = false;
             }
-            if (Input.GetKey(GetKeyCode("Start", 1)) || Input.GetKey(KeyCode.Escape))
+            if (Input.GetKeyUp(GetKeyCode("Start", 1)) || Input.GetKey(KeyCode.Escape))
             {
                 startPressed1 = true;
             }
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Util
             {
                 startPressed1 = false;
             }
-            if (Input.GetKey(GetKeyCode("Start", 2)) || Input.GetKey(KeyCode.Escape))
+            if (Input.GetKeyUp(GetKeyCode("Start", 2)) || Input.GetKey(KeyCode.Escape))
             {
                 startPressed2 = true;
             }
